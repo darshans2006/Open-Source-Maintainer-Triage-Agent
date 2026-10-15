@@ -1,0 +1,67 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# Environment Variables & Secrets (Keep .env secure!)
+.env
+*.env
+!.env.example
+
+# Temporary repo clone / build directories
+_tmp_repo/
+_tmp_*/
+tmp/
+temp/
+*.tmp
+
+# Streamlit & Cache
+.streamlit/
+.cache/
+*.log
+
+# Testing & dev tooling
+.pytest_cache/
+.coverage
+.agents/
+
+# Cached GitHub REST responses for offline development / rate limit avoidance
+!cache/
+!cache/encode_httpx/
+!cache/encode_httpx/**
+
+# Operating System files
+.DS_Store
+Thumbs.db
+desktop.ini

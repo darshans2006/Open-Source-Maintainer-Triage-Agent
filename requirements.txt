@@ -1,0 +1,8 @@
+falkordb>=1.8.0
+requests>=2.31.0
+rich>=13.7.0
+python-dotenv>=1.0.1
+fastmcp>=0.4.0
+streamlit>=1.30.0
+falkordblite>=0.10.0; python_version >= '3.12'
+pytest>=7.4.0
