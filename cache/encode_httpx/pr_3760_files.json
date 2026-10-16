@@ -1,0 +1,26 @@
+[
+  {
+    "sha": "49f928ddf78d401d00756d6f354052fe27c4b38d",
+    "filename": "httpx/_client.py",
+    "status": "modified",
+    "additions": 13,
+    "deletions": 3,
+    "changes": 16,
+    "blob_url": "https://github.com/encode/httpx/blob/b2adc529e7c3ccb75965a29a35bb339198c0baff/httpx%2F_client.py",
+    "raw_url": "https://github.com/encode/httpx/raw/b2adc529e7c3ccb75965a29a35bb339198c0baff/httpx%2F_client.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/httpx%2F_client.py?ref=b2adc529e7c3ccb75965a29a35bb339198c0baff",
+    "patch": "@@ -232,9 +232,19 @@ def trust_env(self) -> bool:\n         return self._trust_env\n \n     def _enforce_trailing_slash(self, url: URL) -> URL:\n-        if url.raw_path.endswith(b\"/\"):\n-            return url\n-        return url.copy_with(raw_path=url.raw_path + b\"/\")\n+        # Split raw_path into path and query to avoid corrupting query parameters\n+        raw_path = url.raw_path\n+        if b\"?\" in raw_path:\n+            # URL has query parameters - only check/add slash to path portion\n+            path, query = raw_path.split(b\"?\", 1)\n+            if path.endswith(b\"/\"):\n+                return url\n+            return url.copy_with(raw_path=path + b\"/?\" + query)\n+        else:\n+            # No query parameters - check/add slash to entire raw_path\n+            if raw_path.endswith(b\"/\"):\n+                return url\n+            return url.copy_with(raw_path=raw_path + b\"/\")\n \n     def _get_proxy_map(\n         self, proxy: ProxyTypes | None, allow_env_proxies: bool"
+  },
+  {
+    "sha": "9e7a601c5bd0c688d7428aba7f827fa77e6c6d75",
+    "filename": "tests/client/test_client.py",
+    "status": "modified",
+    "additions": 33,
+    "deletions": 0,
+    "changes": 33,
+    "blob_url": "https://github.com/encode/httpx/blob/b2adc529e7c3ccb75965a29a35bb339198c0baff/tests%2Fclient%2Ftest_client.py",
+    "raw_url": "https://github.com/encode/httpx/raw/b2adc529e7c3ccb75965a29a35bb339198c0baff/tests%2Fclient%2Ftest_client.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/tests%2Fclient%2Ftest_client.py?ref=b2adc529e7c3ccb75965a29a35bb339198c0baff",
+    "patch": "@@ -460,3 +460,36 @@ def cp1252_but_no_content_type(request):\n         assert response.reason_phrase == \"OK\"\n         assert response.encoding == \"ISO-8859-1\"\n         assert response.text == text\n+\n+\n+def test_base_url_with_query_params():\n+    \"\"\"\n+    Test that base_url with query parameters doesn't corrupt the query values.\n+\n+    Regression test for issue #3614.\n+    \"\"\"\n+    client = httpx.Client(base_url=\"https://example.com/api?data=1\")\n+\n+    # Query parameter should not be corrupted with trailing slash\n+    assert client.base_url.query == b\"data=1\"\n+    assert str(client.base_url) == \"https://example.com/api/?data=1\"\n+\n+\n+def test_base_url_with_trailing_slash_and_query():\n+    \"\"\"\n+    Test that base_url with existing trailing slash and query params works correctly.\n+    \"\"\"\n+    client = httpx.Client(base_url=\"https://example.com/api/?key=value\")\n+\n+    assert client.base_url.query == b\"key=value\"\n+    assert str(client.base_url) == \"https://example.com/api/?key=value\"\n+\n+\n+def test_base_url_with_multiple_query_params():\n+    \"\"\"\n+    Test that base_url with multiple query parameters works correctly.\n+    \"\"\"\n+    client = httpx.Client(base_url=\"https://example.com/api?a=1&b=2&c=3\")\n+\n+    assert client.base_url.query == b\"a=1&b=2&c=3\"\n+    assert str(client.base_url) == \"https://example.com/api/?a=1&b=2&c=3\""
+  }
+]

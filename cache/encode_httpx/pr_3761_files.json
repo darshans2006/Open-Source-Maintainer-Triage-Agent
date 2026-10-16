@@ -1,0 +1,26 @@
+[
+  {
+    "sha": "d4e2c4ed661db35ee7e7c40fb543ce36d14e7165",
+    "filename": "httpx/_models.py",
+    "status": "modified",
+    "additions": 1,
+    "deletions": 1,
+    "changes": 2,
+    "blob_url": "https://github.com/encode/httpx/blob/38fe19f18f0d2224bf243ad0507f565dca6f0314/httpx%2F_models.py",
+    "raw_url": "https://github.com/encode/httpx/raw/38fe19f18f0d2224bf243ad0507f565dca6f0314/httpx%2F_models.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/httpx%2F_models.py?ref=38fe19f18f0d2224bf243ad0507f565dca6f0314",
+    "patch": "@@ -396,7 +396,7 @@ def __init__(\n         extensions: RequestExtensions | None = None,\n     ) -> None:\n         self.method = method.upper()\n-        self.url = URL(url) if params is None else URL(url, params=params)\n+        self.url = URL(url) if params is None else URL(url).copy_merge_params(params)\n         self.headers = Headers(headers)\n         self.extensions = {} if extensions is None else dict(extensions)\n "
+  },
+  {
+    "sha": "321b611b73a1c11bb84e25c7bc032f03fe0cbdce",
+    "filename": "tests/models/test_requests.py",
+    "status": "modified",
+    "additions": 10,
+    "deletions": 2,
+    "changes": 12,
+    "blob_url": "https://github.com/encode/httpx/blob/38fe19f18f0d2224bf243ad0507f565dca6f0314/tests%2Fmodels%2Ftest_requests.py",
+    "raw_url": "https://github.com/encode/httpx/raw/38fe19f18f0d2224bf243ad0507f565dca6f0314/tests%2Fmodels%2Ftest_requests.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/tests%2Fmodels%2Ftest_requests.py?ref=38fe19f18f0d2224bf243ad0507f565dca6f0314",
+    "patch": "@@ -232,10 +232,18 @@ def test_request_params():\n     request = httpx.Request(\"GET\", \"http://example.com\", params={})\n     assert str(request.url) == \"http://example.com\"\n \n+    # Params are merged with existing URL query parameters, not replaced.\n     request = httpx.Request(\n         \"GET\", \"http://example.com?c=3\", params={\"a\": \"1\", \"b\": \"2\"}\n     )\n-    assert str(request.url) == \"http://example.com?a=1&b=2\"\n+    assert str(request.url) == \"http://example.com?c=3&a=1&b=2\"\n \n+    # Empty params preserves existing URL query parameters.\n     request = httpx.Request(\"GET\", \"http://example.com?a=1\", params={})\n-    assert str(request.url) == \"http://example.com\"\n+    assert str(request.url) == \"http://example.com?a=1\"\n+\n+    # Params with overlapping keys override existing URL query parameters.\n+    request = httpx.Request(\n+        \"GET\", \"http://example.com?a=1&b=2\", params={\"b\": \"3\", \"c\": \"4\"}\n+    )\n+    assert str(request.url) == \"http://example.com?a=1&b=3&c=4\""
+  }
+]

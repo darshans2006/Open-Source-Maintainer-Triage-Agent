@@ -1,0 +1,42 @@
+[
+  {
+    "id": 3596778222,
+    "node_id": "PRR_kwDOCrLX_c7WYnru",
+    "user": {
+      "login": "sergey-miryanov",
+      "id": 67315,
+      "node_id": "MDQ6VXNlcjY3MzE1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/67315?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/sergey-miryanov",
+      "html_url": "https://github.com/sergey-miryanov",
+      "followers_url": "https://api.github.com/users/sergey-miryanov/followers",
+      "following_url": "https://api.github.com/users/sergey-miryanov/following{/other_user}",
+      "gists_url": "https://api.github.com/users/sergey-miryanov/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/sergey-miryanov/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/sergey-miryanov/subscriptions",
+      "organizations_url": "https://api.github.com/users/sergey-miryanov/orgs",
+      "repos_url": "https://api.github.com/users/sergey-miryanov/repos",
+      "events_url": "https://api.github.com/users/sergey-miryanov/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/sergey-miryanov/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "",
+    "state": "COMMENTED",
+    "html_url": "https://github.com/encode/httpx/pull/3733#pullrequestreview-3596778222",
+    "pull_request_url": "https://api.github.com/repos/encode/httpx/pulls/3733",
+    "author_association": "NONE",
+    "_links": {
+      "html": {
+        "href": "https://github.com/encode/httpx/pull/3733#pullrequestreview-3596778222"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/encode/httpx/pulls/3733"
+      }
+    },
+    "submitted_at": "2025-12-19T04:37:52Z",
+    "commit_id": "a2ab5721168a6ed4317babc909d0cb6fcd0c5fda"
+  }
+]

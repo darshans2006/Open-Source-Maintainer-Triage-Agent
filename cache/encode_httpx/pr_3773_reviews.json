@@ -1,0 +1,42 @@
+[
+  {
+    "id": 3840284987,
+    "node_id": "PRR_kwDOCrLX_c7k5hk7",
+    "user": {
+      "login": "lovelydinosaur",
+      "id": 647359,
+      "node_id": "MDQ6VXNlcjY0NzM1OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/647359?u=e576143c4bc15fc44c9bf42f04ff92f4fdc5955f&v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lovelydinosaur",
+      "html_url": "https://github.com/lovelydinosaur",
+      "followers_url": "https://api.github.com/users/lovelydinosaur/followers",
+      "following_url": "https://api.github.com/users/lovelydinosaur/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lovelydinosaur/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lovelydinosaur/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lovelydinosaur/subscriptions",
+      "organizations_url": "https://api.github.com/users/lovelydinosaur/orgs",
+      "repos_url": "https://api.github.com/users/lovelydinosaur/repos",
+      "events_url": "https://api.github.com/users/lovelydinosaur/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lovelydinosaur/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "There's more we could say about this, though... yep. Thanks",
+    "state": "APPROVED",
+    "html_url": "https://github.com/encode/httpx/pull/3773#pullrequestreview-3840284987",
+    "pull_request_url": "https://api.github.com/repos/encode/httpx/pulls/3773",
+    "author_association": "MEMBER",
+    "_links": {
+      "html": {
+        "href": "https://github.com/encode/httpx/pull/3773#pullrequestreview-3840284987"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/encode/httpx/pulls/3773"
+      }
+    },
+    "submitted_at": "2026-02-23T10:40:30Z",
+    "commit_id": "63e885394a629d194b0aa867e8fbf475cdec6521"
+  }
+]

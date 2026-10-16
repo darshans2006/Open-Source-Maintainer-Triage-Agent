@@ -1,0 +1,14 @@
+[
+  {
+    "sha": "b253fbd9100a7a28eb5ccd2abaa1dc71da5a873d",
+    "filename": "scripts/sync-version",
+    "status": "modified",
+    "additions": 1,
+    "deletions": 1,
+    "changes": 2,
+    "blob_url": "https://github.com/encode/httpx/blob/70c704071724bead53f1bf002cdcb0f2b8f6aea9/scripts%2Fsync-version",
+    "raw_url": "https://github.com/encode/httpx/raw/70c704071724bead53f1bf002cdcb0f2b8f6aea9/scripts%2Fsync-version",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/scripts%2Fsync-version?ref=70c704071724bead53f1bf002cdcb0f2b8f6aea9",
+    "patch": "@@ -1,6 +1,6 @@\n #!/bin/sh -e\n \n-SEMVER_REGEX=\"([0-9]+)\\.([0-9]+)\\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?(?:\\+[0-9A-Za-z-]+)?\"\n+SEMVER_REGEX=\"([0-9]+)\\.([0-9]+)\\.([0-9]+)(-([0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*))?(\\+[0-9A-Za-z-]+)?\"\n CHANGELOG_VERSION=$(grep -o -E $SEMVER_REGEX CHANGELOG.md | sed -n 2p)\n VERSION=$(grep -o -E $SEMVER_REGEX httpx/__version__.py | head -1)\n echo \"CHANGELOG_VERSION: $CHANGELOG_VERSION\""
+  }
+]

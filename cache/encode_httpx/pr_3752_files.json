@@ -1,0 +1,26 @@
+[
+  {
+    "sha": "f9d2c2e872bd9b7cb301f16ef25344b451b8922f",
+    "filename": "httpx/_content.py",
+    "status": "modified",
+    "additions": 7,
+    "deletions": 2,
+    "changes": 9,
+    "blob_url": "https://github.com/encode/httpx/blob/fc2d503b4aa2dbda9180046fef63e9e8e7d04516/httpx%2F_content.py",
+    "raw_url": "https://github.com/encode/httpx/raw/fc2d503b4aa2dbda9180046fef63e9e8e7d04516/httpx%2F_content.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/httpx%2F_content.py?ref=fc2d503b4aa2dbda9180046fef63e9e8e7d04516",
+    "patch": "@@ -59,9 +59,14 @@ def __iter__(self) -> Iterator[bytes]:\n                 yield chunk\n                 chunk = self._stream.read(self.CHUNK_SIZE)\n         else:\n-            # Otherwise iterate.\n+            # Otherwise iterate, splitting large chunks.\n             for part in self._stream:\n-                yield part\n+                # Split large chunks into CHUNK_SIZE pieces\n+                offset = 0\n+                while offset < len(part):\n+                    chunk_size = min(self.CHUNK_SIZE, len(part) - offset)\n+                    yield part[offset : offset + chunk_size]\n+                    offset += chunk_size\n \n \n class AsyncIteratorByteStream(AsyncByteStream):"
+  },
+  {
+    "sha": "07b686c7cb6fee648dc60c410ba4d92db684997e",
+    "filename": "tests/test_content.py",
+    "status": "modified",
+    "additions": 25,
+    "deletions": 0,
+    "changes": 25,
+    "blob_url": "https://github.com/encode/httpx/blob/fc2d503b4aa2dbda9180046fef63e9e8e7d04516/tests%2Ftest_content.py",
+    "raw_url": "https://github.com/encode/httpx/raw/fc2d503b4aa2dbda9180046fef63e9e8e7d04516/tests%2Ftest_content.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/tests%2Ftest_content.py?ref=fc2d503b4aa2dbda9180046fef63e9e8e7d04516",
+    "patch": "@@ -516,3 +516,28 @@ def test_allow_nan_false():\n         ValueError, match=\"Out of range float values are not JSON compliant\"\n     ):\n         httpx.Response(200, json=data_with_inf)\n+\n+\n+@pytest.mark.anyio\n+async def test_iterator_content_splits_large_chunks():\n+    # Generator yielding a single large chunk (100 KB)\n+    large_chunk = b\"a\" * 102_400  # 100 KB\n+\n+    def gen() -> typing.Iterator[bytes]:\n+        yield large_chunk\n+\n+    # Pass generator to Request (internally uses IteratorByteStream)\n+    request = httpx.Request(method, url, content=gen())\n+\n+    # Cast to Iterable[bytes] to make mypy happy\n+    sync_stream: typing.Iterable[bytes] = request.stream  # type: ignore\n+\n+    # Collect chunks\n+    chunks = list(sync_stream)\n+\n+    # Each chunk must be <= 64 KB\n+    for chunk in chunks:\n+        assert len(chunk) <= 64 * 1024\n+\n+    # Total content matches original\n+    assert b\"\".join(chunks) == large_chunk"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "sha": "f80e83505dd47aa2205a79ae2173ba37395e91cd",
+    "filename": "httpx/_client.py",
+    "status": "modified",
+    "additions": 21,
+    "deletions": 3,
+    "changes": 24,
+    "blob_url": "https://github.com/encode/httpx/blob/18927fa8e80fcf650d2c47cfe370a7d92c18bd83/httpx%2F_client.py",
+    "raw_url": "https://github.com/encode/httpx/raw/18927fa8e80fcf650d2c47cfe370a7d92c18bd83/httpx%2F_client.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/httpx%2F_client.py?ref=18927fa8e80fcf650d2c47cfe370a7d92c18bd83",
+    "patch": "@@ -232,9 +232,15 @@ def trust_env(self) -> bool:\n         return self._trust_env\n \n     def _enforce_trailing_slash(self, url: URL) -> URL:\n-        if url.raw_path.endswith(b\"/\"):\n+        raw_path = url.raw_path\n+        if b\"?\" in raw_path:\n+            path_part, query_part = raw_path.split(b\"?\", 1)\n+            if path_part.endswith(b\"/\"):\n+                return url\n+            return url.copy_with(raw_path=path_part + b\"/?\" + query_part)\n+        if raw_path.endswith(b\"/\"):\n             return url\n-        return url.copy_with(raw_path=url.raw_path + b\"/\")\n+        return url.copy_with(raw_path=raw_path + b\"/\")\n \n     def _get_proxy_map(\n         self, proxy: ProxyTypes | None, allow_env_proxies: bool\n@@ -406,7 +412,19 @@ def _merge_url(self, url: URL | str) -> URL:\n             # URL('https://www.example.com/subpath/')\n             # >>> client.build_request(\"GET\", \"/path\").url\n             # URL('https://www.example.com/subpath/path')\n-            merge_raw_path = self.base_url.raw_path + merge_url.raw_path.lstrip(b\"/\")\n+            base_raw_path = self.base_url.raw_path\n+            if b\"?\" in base_raw_path:\n+                base_path, base_query = base_raw_path.split(b\"?\", 1)\n+                merge_raw_path = (\n+                    base_path\n+                    + merge_url.raw_path.lstrip(b\"/\")\n+                    + b\"?\"\n+                    + base_query\n+                )\n+            else:\n+                merge_raw_path = (\n+                    base_raw_path + merge_url.raw_path.lstrip(b\"/\")\n+                )\n             return self.base_url.copy_with(raw_path=merge_raw_path)\n         return merge_url\n "
+  },
+  {
+    "sha": "977e58996bcc2ba33ad377234dbe94a622d61d3d",
+    "filename": "tests/client/test_client.py",
+    "status": "modified",
+    "additions": 11,
+    "deletions": 0,
+    "changes": 11,
+    "blob_url": "https://github.com/encode/httpx/blob/18927fa8e80fcf650d2c47cfe370a7d92c18bd83/tests%2Fclient%2Ftest_client.py",
+    "raw_url": "https://github.com/encode/httpx/raw/18927fa8e80fcf650d2c47cfe370a7d92c18bd83/tests%2Fclient%2Ftest_client.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/tests%2Fclient%2Ftest_client.py?ref=18927fa8e80fcf650d2c47cfe370a7d92c18bd83",
+    "patch": "@@ -229,6 +229,17 @@ def test_merge_relative_url_with_encoded_slashes():\n     assert request.url == \"https://www.example.com/base%2Fpath/testing\"\n \n \n+def test_merge_url_with_base_url_query_params():\n+    # https://github.com/encode/httpx/issues/3614\n+    client = httpx.Client(base_url=\"https://www.example.com/get?data=1\")\n+\n+    request = client.build_request(\"GET\", \"\")\n+    assert str(request.url) == \"https://www.example.com/get/?data=1\"\n+\n+    request = client.build_request(\"GET\", \"/users\")\n+    assert str(request.url) == \"https://www.example.com/get/users?data=1\"\n+\n+\n def test_context_managed_transport():\n     class Transport(httpx.BaseTransport):\n         def __init__(self) -> None:"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "sha": "1148e11a234bd93c4632421255e57758e62834e3",
+    "filename": "httpx/_models.py",
+    "status": "modified",
+    "additions": 17,
+    "deletions": 4,
+    "changes": 21,
+    "blob_url": "https://github.com/encode/httpx/blob/a23676eecf94b8025b2a817a71358f8e8311fd40/httpx%2F_models.py",
+    "raw_url": "https://github.com/encode/httpx/raw/a23676eecf94b8025b2a817a71358f8e8311fd40/httpx%2F_models.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/httpx%2F_models.py?ref=a23676eecf94b8025b2a817a71358f8e8311fd40",
+    "patch": "@@ -71,15 +71,28 @@ def _normalize_header_key(key: str | bytes, encoding: str | None = None) -> byte\n     return key if isinstance(key, bytes) else key.encode(encoding or \"ascii\")\n \n \n-def _normalize_header_value(value: str | bytes, encoding: str | None = None) -> bytes:\n+def _normalize_header_value(\n+    value: str | bytes, encoding: str | None = None, name: str | bytes = \"\"\n+) -> bytes:\n     \"\"\"\n     Coerce str/bytes into a strictly byte-wise HTTP header value.\n     \"\"\"\n     if isinstance(value, bytes):\n         return value\n     if not isinstance(value, str):\n         raise TypeError(f\"Header value must be str or bytes, not {type(value)}\")\n-    return value.encode(encoding or \"ascii\")\n+    try:\n+        return value.encode(encoding or \"ascii\")\n+    except UnicodeEncodeError as exc:\n+        if name:\n+            raise UnicodeEncodeError(\n+                exc.encoding,\n+                exc.object,\n+                exc.start,\n+                exc.end,\n+                f\"{exc.reason} (header: {name!r})\",\n+            ) from None\n+        raise\n \n \n def _parse_content_type_charset(content_type: str) -> str | None:\n@@ -153,12 +166,12 @@ def __init__(\n         elif isinstance(headers, Mapping):\n             for k, v in headers.items():\n                 bytes_key = _normalize_header_key(k, encoding)\n-                bytes_value = _normalize_header_value(v, encoding)\n+                bytes_value = _normalize_header_value(v, encoding, name=k)\n                 self._list.append((bytes_key, bytes_key.lower(), bytes_value))\n         elif headers is not None:\n             for k, v in headers:\n                 bytes_key = _normalize_header_key(k, encoding)\n-                bytes_value = _normalize_header_value(v, encoding)\n+                bytes_value = _normalize_header_value(v, encoding, name=k)\n                 self._list.append((bytes_key, bytes_key.lower(), bytes_value))\n \n         self._encoding = encoding"
+  },
+  {
+    "sha": "6e6820b8482c9ca2faf5b54c4f8889e2bccd218d",
+    "filename": "tests/models/test_headers.py",
+    "status": "modified",
+    "additions": 6,
+    "deletions": 0,
+    "changes": 6,
+    "blob_url": "https://github.com/encode/httpx/blob/a23676eecf94b8025b2a817a71358f8e8311fd40/tests%2Fmodels%2Ftest_headers.py",
+    "raw_url": "https://github.com/encode/httpx/raw/a23676eecf94b8025b2a817a71358f8e8311fd40/tests%2Fmodels%2Ftest_headers.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/tests%2Fmodels%2Ftest_headers.py?ref=a23676eecf94b8025b2a817a71358f8e8311fd40",
+    "patch": "@@ -214,6 +214,12 @@ def test_parse_header_links(value, expected):\n     assert all(link in all_links for link in expected)\n \n \n+def test_header_encoding_error_includes_name():\n+    # https://github.com/encode/httpx/issues/3400\n+    with pytest.raises(UnicodeEncodeError, match=\"header: 'auth'\"):\n+        httpx.Headers({\"auth\": \"\\u0437\\u0434\\u0440\\u0430\\u0432\\u0435\\u0439\"})\n+\n+\n def test_parse_header_links_no_link():\n     all_links = httpx.Response(200).links\n     assert all_links == {}"
+  }
+]

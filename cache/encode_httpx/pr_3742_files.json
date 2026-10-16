@@ -1,0 +1,26 @@
+[
+  {
+    "sha": "dd382a97724c9f59d2a47ea1c361fcaae470be18",
+    "filename": "httpx/_transports/mock.py",
+    "status": "modified",
+    "additions": 3,
+    "deletions": 0,
+    "changes": 3,
+    "blob_url": "https://github.com/encode/httpx/blob/d4d988343f03fa49fba56f48696aa5674b36bdf4/httpx%2F_transports%2Fmock.py",
+    "raw_url": "https://github.com/encode/httpx/raw/d4d988343f03fa49fba56f48696aa5674b36bdf4/httpx%2F_transports%2Fmock.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/httpx%2F_transports%2Fmock.py?ref=d4d988343f03fa49fba56f48696aa5674b36bdf4",
+    "patch": "@@ -1,5 +1,6 @@\n from __future__ import annotations\n \n+import datetime\n import typing\n \n from .._models import Request, Response\n@@ -24,6 +25,7 @@ def handle_request(\n         response = self.handler(request)\n         if not isinstance(response, Response):  # pragma: no cover\n             raise TypeError(\"Cannot use an async handler in a sync Client\")\n+        response.elapsed = datetime.timedelta(seconds=0)\n         return response\n \n     async def handle_async_request(\n@@ -40,4 +42,5 @@ async def handle_async_request(\n         if not isinstance(response, Response):\n             response = await response\n \n+        response.elapsed = datetime.timedelta(seconds=0)\n         return response"
+  },
+  {
+    "sha": "56a3c574ec52cad5116e977ce3fa6445c0299ba8",
+    "filename": "tests/test_transports.py",
+    "status": "added",
+    "additions": 24,
+    "deletions": 0,
+    "changes": 24,
+    "blob_url": "https://github.com/encode/httpx/blob/d4d988343f03fa49fba56f48696aa5674b36bdf4/tests%2Ftest_transports.py",
+    "raw_url": "https://github.com/encode/httpx/raw/d4d988343f03fa49fba56f48696aa5674b36bdf4/tests%2Ftest_transports.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/tests%2Ftest_transports.py?ref=d4d988343f03fa49fba56f48696aa5674b36bdf4",
+    "patch": "@@ -0,0 +1,24 @@\n+import datetime\n+import pytest\n+import httpx\n+\n+\n+def test_mock_transport_sets_elapsed():\n+    \"\"\"Test that MockTransport sets the elapsed property on responses.\"\"\"\n+    \n+    # 1. Create a simple handler that returns a response\n+    def handler(request: httpx.Request) -> httpx.Response:\n+        return httpx.Response(200, content=b\"Hello\")\n+    \n+    # 2. Create a MockTransport with that handler\n+    transport = httpx.MockTransport(handler)\n+    \n+    # 3. Create a client with the transport\n+    client = httpx.Client(transport=transport)\n+    \n+    # 4. Make a request\n+    response = client.get(\"http://example.com/\")\n+    \n+    # 5. Assert that elapsed is set and is a timedelta\n+    assert hasattr(response, \"_elapsed\")\n+    assert isinstance(response.elapsed, datetime.timedelta)"
+  }
+]

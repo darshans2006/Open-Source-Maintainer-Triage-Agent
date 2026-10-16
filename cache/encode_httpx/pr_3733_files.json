@@ -1,0 +1,26 @@
+[
+  {
+    "sha": "22d0ffd300241986cf236077fc06aae42c52dc52",
+    "filename": "CHANGELOG.md",
+    "status": "modified",
+    "additions": 4,
+    "deletions": 0,
+    "changes": 4,
+    "blob_url": "https://github.com/encode/httpx/blob/d4d1959a6953ced4eca59bc7a35691e7561ec73c/CHANGELOG.md",
+    "raw_url": "https://github.com/encode/httpx/raw/d4d1959a6953ced4eca59bc7a35691e7561ec73c/CHANGELOG.md",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/CHANGELOG.md?ref=d4d1959a6953ced4eca59bc7a35691e7561ec73c",
+    "patch": "@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).\n \n ## [UNRELEASED]\n \n+### Fixed\n+\n+* Avoid creating references cycles from `BoundSyncStream` and `BoundAsyncStream` to the response object.  This allows memory to be freed by reference counting, which happens quickly, rather than waiting for the cyclic GC to run.\n+\n ### Removed\n \n * Drop support for Python 3.8"
+  },
+  {
+    "sha": "c4ae96ddbe46dec1659311d5661393ea62550d43",
+    "filename": "httpx/_client.py",
+    "status": "modified",
+    "additions": 9,
+    "deletions": 4,
+    "changes": 13,
+    "blob_url": "https://github.com/encode/httpx/blob/d4d1959a6953ced4eca59bc7a35691e7561ec73c/httpx%2F_client.py",
+    "raw_url": "https://github.com/encode/httpx/raw/d4d1959a6953ced4eca59bc7a35691e7561ec73c/httpx%2F_client.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/httpx%2F_client.py?ref=d4d1959a6953ced4eca59bc7a35691e7561ec73c",
+    "patch": "@@ -6,6 +6,7 @@\n import time\n import typing\n import warnings\n+import weakref\n from contextlib import asynccontextmanager, contextmanager\n from types import TracebackType\n \n@@ -146,7 +147,7 @@ def __init__(\n         self, stream: SyncByteStream, response: Response, start: float\n     ) -> None:\n         self._stream = stream\n-        self._response = response\n+        self._response = weakref.ref(response)\n         self._start = start\n \n     def __iter__(self) -> typing.Iterator[bytes]:\n@@ -155,7 +156,9 @@ def __iter__(self) -> typing.Iterator[bytes]:\n \n     def close(self) -> None:\n         elapsed = time.perf_counter() - self._start\n-        self._response.elapsed = datetime.timedelta(seconds=elapsed)\n+        response = self._response()\n+        if response is not None:\n+            response.elapsed = datetime.timedelta(seconds=elapsed)\n         self._stream.close()\n \n \n@@ -169,7 +172,7 @@ def __init__(\n         self, stream: AsyncByteStream, response: Response, start: float\n     ) -> None:\n         self._stream = stream\n-        self._response = response\n+        self._response = weakref.ref(response)\n         self._start = start\n \n     async def __aiter__(self) -> typing.AsyncIterator[bytes]:\n@@ -178,7 +181,9 @@ async def __aiter__(self) -> typing.AsyncIterator[bytes]:\n \n     async def aclose(self) -> None:\n         elapsed = time.perf_counter() - self._start\n-        self._response.elapsed = datetime.timedelta(seconds=elapsed)\n+        response = self._response()\n+        if response is not None:\n+            response.elapsed = datetime.timedelta(seconds=elapsed)\n         await self._stream.aclose()\n \n "
+  }
+]

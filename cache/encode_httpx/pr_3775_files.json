@@ -1,0 +1,14 @@
+[
+  {
+    "sha": "132d1a15ffca1b7f4a86805512ecd80b96847581",
+    "filename": "tests/conftest.py",
+    "status": "modified",
+    "additions": 31,
+    "deletions": 4,
+    "changes": 35,
+    "blob_url": "https://github.com/encode/httpx/blob/8a959d830e8631f84401aeb5fd2e0ffa9bbfe3d7/tests%2Fconftest.py",
+    "raw_url": "https://github.com/encode/httpx/raw/8a959d830e8631f84401aeb5fd2e0ffa9bbfe3d7/tests%2Fconftest.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/tests%2Fconftest.py?ref=8a959d830e8631f84401aeb5fd2e0ffa9bbfe3d7",
+    "patch": "@@ -268,16 +268,43 @@ async def watch_restarts(self) -> None:  # pragma: no cover\n             await self.startup()\n \n \n-def serve_in_thread(server: TestServer) -> typing.Iterator[TestServer]:\n-    thread = threading.Thread(target=server.run)\n+def serve_in_thread(\n+    server: TestServer,\n+    *,\n+    timeout: float = 10.0,\n+) -> typing.Iterator[TestServer]:\n+    server_exception = None\n+    server_caught_exception = threading.Event()\n+\n+    def _run_server() -> None:\n+        nonlocal server_exception\n+        try:\n+            server.run()\n+        except BaseException as exc:  # pragma: nocover\n+            # BaseException as we need to catch SystemExit too;\n+            # `uvicorn` calls `sys.exit(1)` at failure.\n+            server_exception = exc\n+            server_caught_exception.set()\n+\n+    thread = threading.Thread(target=_run_server)\n     thread.start()\n+\n     try:\n-        while not server.started:\n+        start_time = time.time()\n+        while True:\n+            if server.started:\n+                break\n+            if server_caught_exception.wait(1e-3):  # pragma: nocover\n+                raise RuntimeError(\n+                    f\"Server failed to start: {server_exception!r}\",\n+                ) from server_exception\n+            if time.time() - start_time > timeout:  # pragma: nocover\n+                raise TimeoutError(\"Server did not start in time\")\n             time.sleep(1e-3)\n         yield server\n     finally:\n         server.should_exit = True\n-        thread.join()\n+        thread.join(timeout=timeout)\n \n \n @pytest.fixture(scope=\"session\")"
+  }
+]

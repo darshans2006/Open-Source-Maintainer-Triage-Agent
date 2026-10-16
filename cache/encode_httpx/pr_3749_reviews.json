@@ -1,0 +1,122 @@
+[
+  {
+    "id": 3713570615,
+    "node_id": "PRR_kwDOCrLX_c7dWJc3",
+    "user": {
+      "login": "lovelydinosaur",
+      "id": 647359,
+      "node_id": "MDQ6VXNlcjY0NzM1OQ==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/647359?u=e576143c4bc15fc44c9bf42f04ff92f4fdc5955f&v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/lovelydinosaur",
+      "html_url": "https://github.com/lovelydinosaur",
+      "followers_url": "https://api.github.com/users/lovelydinosaur/followers",
+      "following_url": "https://api.github.com/users/lovelydinosaur/following{/other_user}",
+      "gists_url": "https://api.github.com/users/lovelydinosaur/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/lovelydinosaur/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/lovelydinosaur/subscriptions",
+      "organizations_url": "https://api.github.com/users/lovelydinosaur/orgs",
+      "repos_url": "https://api.github.com/users/lovelydinosaur/repos",
+      "events_url": "https://api.github.com/users/lovelydinosaur/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/lovelydinosaur/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "",
+    "state": "COMMENTED",
+    "html_url": "https://github.com/encode/httpx/pull/3749#pullrequestreview-3713570615",
+    "pull_request_url": "https://api.github.com/repos/encode/httpx/pulls/3749",
+    "author_association": "MEMBER",
+    "_links": {
+      "html": {
+        "href": "https://github.com/encode/httpx/pull/3749#pullrequestreview-3713570615"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/encode/httpx/pulls/3749"
+      }
+    },
+    "submitted_at": "2026-01-27T21:34:51Z",
+    "commit_id": "0ec032d724df25cee80453626bb0450ea3d59db0"
+  },
+  {
+    "id": 3713635349,
+    "node_id": "PRR_kwDOCrLX_c7dWZQV",
+    "user": {
+      "login": "iciclespider",
+      "id": 81206,
+      "node_id": "MDQ6VXNlcjgxMjA2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/81206?u=47a57e3e51ae98e64ec546860f193861fd9ad0eb&v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/iciclespider",
+      "html_url": "https://github.com/iciclespider",
+      "followers_url": "https://api.github.com/users/iciclespider/followers",
+      "following_url": "https://api.github.com/users/iciclespider/following{/other_user}",
+      "gists_url": "https://api.github.com/users/iciclespider/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/iciclespider/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/iciclespider/subscriptions",
+      "organizations_url": "https://api.github.com/users/iciclespider/orgs",
+      "repos_url": "https://api.github.com/users/iciclespider/repos",
+      "events_url": "https://api.github.com/users/iciclespider/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/iciclespider/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "",
+    "state": "COMMENTED",
+    "html_url": "https://github.com/encode/httpx/pull/3749#pullrequestreview-3713635349",
+    "pull_request_url": "https://api.github.com/repos/encode/httpx/pulls/3749",
+    "author_association": "NONE",
+    "_links": {
+      "html": {
+        "href": "https://github.com/encode/httpx/pull/3749#pullrequestreview-3713635349"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/encode/httpx/pulls/3749"
+      }
+    },
+    "submitted_at": "2026-01-27T21:54:50Z",
+    "commit_id": "0ec032d724df25cee80453626bb0450ea3d59db0"
+  },
+  {
+    "id": 3713759294,
+    "node_id": "PRR_kwDOCrLX_c7dW3g-",
+    "user": {
+      "login": "iciclespider",
+      "id": 81206,
+      "node_id": "MDQ6VXNlcjgxMjA2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/81206?u=47a57e3e51ae98e64ec546860f193861fd9ad0eb&v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/iciclespider",
+      "html_url": "https://github.com/iciclespider",
+      "followers_url": "https://api.github.com/users/iciclespider/followers",
+      "following_url": "https://api.github.com/users/iciclespider/following{/other_user}",
+      "gists_url": "https://api.github.com/users/iciclespider/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/iciclespider/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/iciclespider/subscriptions",
+      "organizations_url": "https://api.github.com/users/iciclespider/orgs",
+      "repos_url": "https://api.github.com/users/iciclespider/repos",
+      "events_url": "https://api.github.com/users/iciclespider/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/iciclespider/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "",
+    "state": "COMMENTED",
+    "html_url": "https://github.com/encode/httpx/pull/3749#pullrequestreview-3713759294",
+    "pull_request_url": "https://api.github.com/repos/encode/httpx/pulls/3749",
+    "author_association": "NONE",
+    "_links": {
+      "html": {
+        "href": "https://github.com/encode/httpx/pull/3749#pullrequestreview-3713759294"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/encode/httpx/pulls/3749"
+      }
+    },
+    "submitted_at": "2026-01-27T22:36:16Z",
+    "commit_id": "0ec032d724df25cee80453626bb0450ea3d59db0"
+  }
+]

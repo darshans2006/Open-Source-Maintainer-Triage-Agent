@@ -1,0 +1,38 @@
+[
+  {
+    "sha": "a247b8b45856f78b5b9e3b08dbae1394cf4c1ef8",
+    "filename": "src/ahttpx/_request.py",
+    "status": "modified",
+    "additions": 5,
+    "deletions": 0,
+    "changes": 5,
+    "blob_url": "https://github.com/encode/httpx/blob/6b99aaed1194812edf11f5d265f0d761fd2274c5/src%2Fahttpx%2F_request.py",
+    "raw_url": "https://github.com/encode/httpx/raw/6b99aaed1194812edf11f5d265f0d761fd2274c5/src%2Fahttpx%2F_request.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/src%2Fahttpx%2F_request.py?ref=6b99aaed1194812edf11f5d265f0d761fd2274c5",
+    "patch": "@@ -29,6 +29,11 @@ def __init__(\n         if \"Host\" not in self.headers:\n             self.headers = self.headers.copy_set(\"Host\", self.url.netloc)\n \n+        if self.url.scheme not in ('http', 'https'):\n+            raise ValueError(f'Invalid scheme for URL {str(self.url)!r}.')\n+        if not self.url.netloc:\n+            raise ValueError(f'Missing host for URL {str(self.url)!r}.')\n+\n         if content is not None:\n             if isinstance(content, bytes):\n                 self.stream = ByteStream(content)"
+  },
+  {
+    "sha": "03c78dfea2e5a8475869a72ab1a436067191158f",
+    "filename": "src/httpx/_request.py",
+    "status": "modified",
+    "additions": 5,
+    "deletions": 0,
+    "changes": 5,
+    "blob_url": "https://github.com/encode/httpx/blob/6b99aaed1194812edf11f5d265f0d761fd2274c5/src%2Fhttpx%2F_request.py",
+    "raw_url": "https://github.com/encode/httpx/raw/6b99aaed1194812edf11f5d265f0d761fd2274c5/src%2Fhttpx%2F_request.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/src%2Fhttpx%2F_request.py?ref=6b99aaed1194812edf11f5d265f0d761fd2274c5",
+    "patch": "@@ -28,6 +28,11 @@ def __init__(\n         # A client MUST include a Host header field in all HTTP/1.1 request messages.\n         if \"Host\" not in self.headers:\n             self.headers = self.headers.copy_set(\"Host\", self.url.netloc)\n+        \n+        if self.url.scheme not in ('http', 'https'):\n+            raise ValueError(f'Invalid scheme for URL {str(self.url)!r}.')\n+        if not self.url.netloc:\n+            raise ValueError(f'Missing host for URL {str(self.url)!r}.')\n \n         if content is not None:\n             if isinstance(content, bytes):"
+  },
+  {
+    "sha": "cab0a5e109ad464ef4ca3a77e2b8d04f58c181af",
+    "filename": "tests/test_request.py",
+    "status": "modified",
+    "additions": 11,
+    "deletions": 0,
+    "changes": 11,
+    "blob_url": "https://github.com/encode/httpx/blob/6b99aaed1194812edf11f5d265f0d761fd2274c5/tests%2Ftest_request.py",
+    "raw_url": "https://github.com/encode/httpx/raw/6b99aaed1194812edf11f5d265f0d761fd2274c5/tests%2Ftest_request.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/tests%2Ftest_request.py?ref=6b99aaed1194812edf11f5d265f0d761fd2274c5",
+    "patch": "@@ -1,4 +1,5 @@\n import httpx\n+import pytest\n \n \n class ByteIterator:\n@@ -77,3 +78,13 @@ def test_request_empty_post():\n         \"Content-Length\": \"0\",\n     }\n     assert r.read() == b''\n+\n+\n+def test_request_invalid_scheme():\n+    with pytest.raises(ValueError):\n+        httpx.Request(\"GET\", \"ws://example.com\")\n+\n+\n+def test_request_missing_host():\n+    with pytest.raises(ValueError):\n+        r = httpx.Request(\"GET\", \"https:/example.com\")"
+  }
+]

@@ -1,0 +1,82 @@
+[
+  {
+    "id": 3848767550,
+    "node_id": "PRR_kwDOCrLX_c7lZ4g-",
+    "user": {
+      "login": "akx",
+      "id": 58669,
+      "node_id": "MDQ6VXNlcjU4NjY5",
+      "avatar_url": "https://avatars.githubusercontent.com/u/58669?u=a48a7439c9b7bcb7b3c82a05f76c2d9f6451baa3&v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/akx",
+      "html_url": "https://github.com/akx",
+      "followers_url": "https://api.github.com/users/akx/followers",
+      "following_url": "https://api.github.com/users/akx/following{/other_user}",
+      "gists_url": "https://api.github.com/users/akx/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/akx/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/akx/subscriptions",
+      "organizations_url": "https://api.github.com/users/akx/orgs",
+      "repos_url": "https://api.github.com/users/akx/repos",
+      "events_url": "https://api.github.com/users/akx/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/akx/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "",
+    "state": "COMMENTED",
+    "html_url": "https://github.com/encode/httpx/pull/3771#pullrequestreview-3848767550",
+    "pull_request_url": "https://api.github.com/repos/encode/httpx/pulls/3771",
+    "author_association": "NONE",
+    "_links": {
+      "html": {
+        "href": "https://github.com/encode/httpx/pull/3771#pullrequestreview-3848767550"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/encode/httpx/pulls/3771"
+      }
+    },
+    "submitted_at": "2026-02-24T15:40:50Z",
+    "commit_id": "55ead904eff7376ccbc7f23e93be19117c642441"
+  },
+  {
+    "id": 5056101955,
+    "node_id": "PRR_kwDOCrLX_c8AAAABLV3-Qw",
+    "user": {
+      "login": "CAOShurong",
+      "id": 170531907,
+      "node_id": "U_kgDOCiocQw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/170531907?u=e73a41a10eb9f112e46f171a5fb9de2b89fed9a2&v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/CAOShurong",
+      "html_url": "https://github.com/CAOShurong",
+      "followers_url": "https://api.github.com/users/CAOShurong/followers",
+      "following_url": "https://api.github.com/users/CAOShurong/following{/other_user}",
+      "gists_url": "https://api.github.com/users/CAOShurong/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/CAOShurong/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/CAOShurong/subscriptions",
+      "organizations_url": "https://api.github.com/users/CAOShurong/orgs",
+      "repos_url": "https://api.github.com/users/CAOShurong/repos",
+      "events_url": "https://api.github.com/users/CAOShurong/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/CAOShurong/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "Verified independently (no run, no claim). The PR was force-pushed after I first fetched it; I re-fetched and confirmed the current head before reviewing \u2014 head `55ead904eff7376ccbc7f23e93be19117c642441`.\n\nRoot cause: `unquote()` was `value[1:-1] if value[0] == value[-1] == '\"' else value`. The truth condition `value[0] == value[-1] == '\"'` accesses `value[0]` first, so for an empty string `unquote('')` raised `IndexError: string index out of range` before the quote-strip slice could ever run. This fires when parsing a `WWW-Authenticate` digest header carrying an empty unquoted value (e.g. `realm=`).\n\nBehavior check at the current head:\n- `unquote('')` returns `''` (no crash).\n- `unquote('\"a\"')` returns `'a'` (quote-stripping preserved).\n- `unquote('raw')` returns `'raw'` (unchanged).\n\nOn base `ae1b9f6` the same `unquote('')` raises `IndexError: string index out of range` \u2014 RED\u2192GREEN confirmed. The fix guards with `len(value) >= 2` before the quote check, which is the minimal correct change.\n\nOne non-blocking suggestion: the PR has no regression test for the empty-string case. A tiny assertion (`assert unquote('') == ''`) in `tests/test_utils.py` would lock the behavior in. The change itself is correct and low-risk, so approving as-is; happy to see a follow-up test added.\n\n(AI assistance used to collect verification evidence; the fix is the author's.)",
+    "state": "APPROVED",
+    "html_url": "https://github.com/encode/httpx/pull/3771#pullrequestreview-5056101955",
+    "pull_request_url": "https://api.github.com/repos/encode/httpx/pulls/3771",
+    "author_association": "NONE",
+    "_links": {
+      "html": {
+        "href": "https://github.com/encode/httpx/pull/3771#pullrequestreview-5056101955"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/encode/httpx/pulls/3771"
+      }
+    },
+    "submitted_at": "2026-08-29T00:51:57Z",
+    "commit_id": "55ead904eff7376ccbc7f23e93be19117c642441"
+  }
+]

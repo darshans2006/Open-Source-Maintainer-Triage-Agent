@@ -1,0 +1,26 @@
+[
+  {
+    "sha": "fd81d7e486e620764a5ccefe9a5cc47efe320838",
+    "filename": "httpx/_content.py",
+    "status": "modified",
+    "additions": 19,
+    "deletions": 2,
+    "changes": 21,
+    "blob_url": "https://github.com/encode/httpx/blob/357b42fdefa4ac1f0fec37776828618176e9e7c9/httpx%2F_content.py",
+    "raw_url": "https://github.com/encode/httpx/raw/357b42fdefa4ac1f0fec37776828618176e9e7c9/httpx%2F_content.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/httpx%2F_content.py?ref=357b42fdefa4ac1f0fec37776828618176e9e7c9",
+    "patch": "@@ -35,8 +35,25 @@ def __init__(self, stream: bytes) -> None:\n     def __iter__(self) -> Iterator[bytes]:\n         yield self._stream\n \n-    async def __aiter__(self) -> AsyncIterator[bytes]:\n-        yield self._stream\n+    def __aiter__(self) -> AsyncIterator[bytes]:\n+        return _ByteStreamAsyncIterator(self._stream)\n+\n+\n+class _ByteStreamAsyncIterator:\n+    __slots__ = (\"_stream\",)\n+\n+    def __init__(self, stream: bytes) -> None:\n+        self._stream: bytes | None = stream\n+\n+    def __aiter__(self) -> _ByteStreamAsyncIterator:\n+        return self\n+\n+    async def __anext__(self) -> bytes:\n+        stream = self._stream\n+        if stream is None:\n+            raise StopAsyncIteration\n+        self._stream = None  # Consumed.\n+        return stream\n \n \n class IteratorByteStream(SyncByteStream):"
+  },
+  {
+    "sha": "5885c7e719223e225d206971e60574de94ce7d6d",
+    "filename": "tests/test_content.py",
+    "status": "modified",
+    "additions": 4,
+    "deletions": 0,
+    "changes": 4,
+    "blob_url": "https://github.com/encode/httpx/blob/357b42fdefa4ac1f0fec37776828618176e9e7c9/tests%2Ftest_content.py",
+    "raw_url": "https://github.com/encode/httpx/raw/357b42fdefa4ac1f0fec37776828618176e9e7c9/tests%2Ftest_content.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/tests%2Ftest_content.py?ref=357b42fdefa4ac1f0fec37776828618176e9e7c9",
+    "patch": "@@ -32,6 +32,10 @@ async def test_bytes_content():\n     sync_content = b\"\".join(list(request.stream))\n     async_content = b\"\".join([part async for part in request.stream])\n \n+    # The async iterator returned by __aiter__ is itself an async iterator.\n+    async_iterator = request.stream.__aiter__()\n+    assert async_iterator.__aiter__() is async_iterator\n+\n     assert request.headers == {\"Host\": \"www.example.com\", \"Content-Length\": \"13\"}\n     assert sync_content == b\"Hello, world!\"\n     assert async_content == b\"Hello, world!\""
+  }
+]

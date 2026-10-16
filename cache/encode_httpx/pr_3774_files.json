@@ -1,0 +1,14 @@
+[
+  {
+    "sha": "3c958adab5d00b40dffd587c9f5a8ad6b9239f47",
+    "filename": "docs/advanced/transports.md",
+    "status": "modified",
+    "additions": 6,
+    "deletions": 15,
+    "changes": 21,
+    "blob_url": "https://github.com/encode/httpx/blob/631e9fefa2e602c7d38f74ae4a4138f67f14fd38/docs%2Fadvanced%2Ftransports.md",
+    "raw_url": "https://github.com/encode/httpx/raw/631e9fefa2e602c7d38f74ae4a4138f67f14fd38/docs%2Fadvanced%2Ftransports.md",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/docs%2Fadvanced%2Ftransports.md?ref=631e9fefa2e602c7d38f74ae4a4138f67f14fd38",
+    "patch": "@@ -175,7 +175,7 @@ class HelloWorldTransport(httpx.BaseTransport):\n         return httpx.Response(200, json={\"text\": \"Hello, world!\"})\n ```\n \n-Or this example, which uses a custom transport and `httpx.Mounts` to always redirect `http://` requests.\n+Or this example, which uses `mounts` to always redirect `http://` requests.\n \n ```python\n class HTTPSRedirect(httpx.BaseTransport):\n@@ -187,12 +187,10 @@ class HTTPSRedirect(httpx.BaseTransport):\n         return httpx.Response(303, headers={\"Location\": str(url)})\n \n # A client where any `http` requests are always redirected to `https`\n-transport = httpx.Mounts({\n-    'http://': HTTPSRedirect()\n+client = httpx.Client(mounts={\n+    'http://': HTTPSRedirect(),\n     'https://': httpx.HTTPTransport()\n })\n-client = httpx.Client(transport=transport)\n-```\n \n A useful pattern here is custom transport classes that wrap the default HTTP implementation. For example...\n \n@@ -282,16 +280,9 @@ class HTTPSRedirectTransport(httpx.BaseTransport):\n     A transport that always redirects to HTTPS.\n     \"\"\"\n \n-    def handle_request(self, method, url, headers, stream, extensions):\n-        scheme, host, port, path = url\n-        if port is None:\n-            location = b\"https://%s%s\" % (host, path)\n-        else:\n-            location = b\"https://%s:%d%s\" % (host, port, path)\n-        stream = httpx.ByteStream(b\"\")\n-        headers = [(b\"location\", location)]\n-        extensions = {}\n-        return 303, headers, stream, extensions\n+    def handle_request(self, request):\n+        url = request.url.copy_with(scheme=\"https\")\n+        return httpx.Response(303, headers={\"location\": str(url)})\n \n \n # A client where any `http` requests are always redirected to `https`"
+  }
+]

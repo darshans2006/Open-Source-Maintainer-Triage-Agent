@@ -1,0 +1,62 @@
+[
+  {
+    "sha": "77118c42e3b0e944c13c92945a64b14f487d3c51",
+    "filename": ".github/workflows/test-suite.yml",
+    "status": "modified",
+    "additions": 1,
+    "deletions": 1,
+    "changes": 2,
+    "blob_url": "https://github.com/encode/httpx/blob/7aee79f4f0b19c517fe9091bf556e4ba14c5ce62/.github%2Fworkflows%2Ftest-suite.yml",
+    "raw_url": "https://github.com/encode/httpx/raw/7aee79f4f0b19c517fe9091bf556e4ba14c5ce62/.github%2Fworkflows%2Ftest-suite.yml",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/.github%2Fworkflows%2Ftest-suite.yml?ref=7aee79f4f0b19c517fe9091bf556e4ba14c5ce62",
+    "patch": "@@ -14,7 +14,7 @@ jobs:\n \n     strategy:\n       matrix:\n-        python-version: [\"3.9\", \"3.10\", \"3.11\", \"3.12\", \"3.13\"]\n+        python-version: [\"3.10\", \"3.11\", \"3.12\", \"3.13\"]\n \n     steps:\n       - uses: \"actions/checkout@v4\""
+  },
+  {
+    "sha": "a3fa79897356a9c977300dcfe6748263779a8d44",
+    "filename": "CHANGELOG.md",
+    "status": "modified",
+    "additions": 2,
+    "deletions": 4,
+    "changes": 6,
+    "blob_url": "https://github.com/encode/httpx/blob/7aee79f4f0b19c517fe9091bf556e4ba14c5ce62/CHANGELOG.md",
+    "raw_url": "https://github.com/encode/httpx/raw/7aee79f4f0b19c517fe9091bf556e4ba14c5ce62/CHANGELOG.md",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/CHANGELOG.md?ref=7aee79f4f0b19c517fe9091bf556e4ba14c5ce62",
+    "patch": "@@ -4,11 +4,9 @@ All notable changes to this project will be documented in this file.\n \n The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).\n \n-## [UNRELEASED]\n+## 1.0.0 (Unreleased)\n \n-### Removed\n-\n-* Drop support for Python 3.8\n+* Minimum supported Python version is now 3.10\n \n ### Added\n "
+  },
+  {
+    "sha": "4cea62865e5e74516d6ee75ee0119bc1fc438262",
+    "filename": "httpx/__version__.py",
+    "status": "modified",
+    "additions": 1,
+    "deletions": 1,
+    "changes": 2,
+    "blob_url": "https://github.com/encode/httpx/blob/7aee79f4f0b19c517fe9091bf556e4ba14c5ce62/httpx%2F__version__.py",
+    "raw_url": "https://github.com/encode/httpx/raw/7aee79f4f0b19c517fe9091bf556e4ba14c5ce62/httpx%2F__version__.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/httpx%2F__version__.py?ref=7aee79f4f0b19c517fe9091bf556e4ba14c5ce62",
+    "patch": "@@ -1,3 +1,3 @@\n __title__ = \"httpx\"\n __description__ = \"A next generation HTTP client, for Python 3.\"\n-__version__ = \"0.28.1\"\n+__version__ = \"1.0.0\""
+  },
+  {
+    "sha": "1dea3394f16a6ffdb5068721c2b57463faa9cff3",
+    "filename": "pyproject.toml",
+    "status": "modified",
+    "additions": 2,
+    "deletions": 2,
+    "changes": 4,
+    "blob_url": "https://github.com/encode/httpx/blob/7aee79f4f0b19c517fe9091bf556e4ba14c5ce62/pyproject.toml",
+    "raw_url": "https://github.com/encode/httpx/raw/7aee79f4f0b19c517fe9091bf556e4ba14c5ce62/pyproject.toml",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/pyproject.toml?ref=7aee79f4f0b19c517fe9091bf556e4ba14c5ce62",
+    "patch": "@@ -6,7 +6,7 @@ build-backend = \"hatchling.build\"\n name = \"httpx\"\n description = \"The next generation HTTP client.\"\n license = \"BSD-3-Clause\"\n-requires-python = \">=3.9\"\n+requires-python = \">=3.10\"\n authors = [\n     { name = \"Tom Christie\", email = \"tom@tomchristie.com\" },\n ]\n@@ -20,11 +20,11 @@ classifiers = [\n     \"Operating System :: OS Independent\",\n     \"Programming Language :: Python :: 3\",\n     \"Programming Language :: Python :: 3 :: Only\",\n-    \"Programming Language :: Python :: 3.9\",\n     \"Programming Language :: Python :: 3.10\",\n     \"Programming Language :: Python :: 3.11\",\n     \"Programming Language :: Python :: 3.12\",\n     \"Programming Language :: Python :: 3.13\",\n+    \"Programming Language :: Python :: 3.14\",\n     \"Topic :: Internet :: WWW/HTTP\",\n ]\n dependencies = ["
+  },
+  {
+    "sha": "26b4dfabd17f42d34c0b7b2e8751f855eabecdfc",
+    "filename": "requirements.txt",
+    "status": "modified",
+    "additions": 1,
+    "deletions": 1,
+    "changes": 2,
+    "blob_url": "https://github.com/encode/httpx/blob/7aee79f4f0b19c517fe9091bf556e4ba14c5ce62/requirements.txt",
+    "raw_url": "https://github.com/encode/httpx/raw/7aee79f4f0b19c517fe9091bf556e4ba14c5ce62/requirements.txt",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/requirements.txt?ref=7aee79f4f0b19c517fe9091bf556e4ba14c5ce62",
+    "patch": "@@ -15,7 +15,7 @@ mkdocs-material==9.6.18\n \n # Packaging\n build==1.3.0\n-twine==6.1.0\n+twine==7.0.0\n \n # Tests & Linting\n coverage[toml]==7.10.6"
+  }
+]

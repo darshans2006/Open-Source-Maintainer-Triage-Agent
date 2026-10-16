@@ -1,0 +1,62 @@
+[
+  {
+    "sha": "96042e4c41956f8b0e2ab717390301ff8afa3ea3",
+    "filename": "README.md",
+    "status": "modified",
+    "additions": 1,
+    "deletions": 1,
+    "changes": 2,
+    "blob_url": "https://github.com/encode/httpx/blob/4d05db33ceaa977e93dc07c12cbf8ea091df12a3/README.md",
+    "raw_url": "https://github.com/encode/httpx/raw/4d05db33ceaa977e93dc07c12cbf8ea091df12a3/README.md",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/README.md?ref=4d05db33ceaa977e93dc07c12cbf8ea091df12a3",
+    "patch": "@@ -136,7 +136,7 @@ As well as these optional installs:\n * `rich` - Rich terminal support. *(Optional, with `httpx[cli]`)*\n * `click` - Command line client support. *(Optional, with `httpx[cli]`)*\n * `brotli` or `brotlicffi` - Decoding for \"brotli\" compressed responses. *(Optional, with `httpx[brotli]`)*\n-* `zstandard` - Decoding for \"zstd\" compressed responses. *(Optional, with `httpx[zstd]`)*\n+* `backports.zstd` - Decoding for \"zstd\" compressed responses on Python before 3.14. *(Optional, with `httpx[zstd]`)*\n \n A huge amount of credit is due to `requests` for the API layout that\n much of this work follows, as well as to `urllib3` for plenty of design"
+  },
+  {
+    "sha": "49e2eb4de3532773c55d91700a5394e420d3ff8c",
+    "filename": "docs/quickstart.md",
+    "status": "modified",
+    "additions": 2,
+    "deletions": 2,
+    "changes": 4,
+    "blob_url": "https://github.com/encode/httpx/blob/4d05db33ceaa977e93dc07c12cbf8ea091df12a3/docs%2Fquickstart.md",
+    "raw_url": "https://github.com/encode/httpx/raw/4d05db33ceaa977e93dc07c12cbf8ea091df12a3/docs%2Fquickstart.md",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/docs%2Fquickstart.md?ref=4d05db33ceaa977e93dc07c12cbf8ea091df12a3",
+    "patch": "@@ -100,8 +100,8 @@ b'<!doctype html>\\n<html>\\n<head>\\n<title>Example Domain</title>...'\n \n Any `gzip` and `deflate` HTTP response encodings will automatically\n be decoded for you. If `brotlipy` is installed, then the `brotli` response\n-encoding will be supported. If `zstandard` is installed, then `zstd`\n-response encodings will also be supported.\n+encoding will be supported. If the Python version used is 3.14 or higher or\n+if `backports.zstd` is installed, then `zstd` response encodings will also be supported.\n \n For example, to create an image from binary data returned by a request, you can use the following code:\n "
+  },
+  {
+    "sha": "f35de81fb9545a4530bb149e3fecb132965ce6fc",
+    "filename": "httpx/_decoders.py",
+    "status": "modified",
+    "additions": 14,
+    "deletions": 11,
+    "changes": 25,
+    "blob_url": "https://github.com/encode/httpx/blob/4d05db33ceaa977e93dc07c12cbf8ea091df12a3/httpx%2F_decoders.py",
+    "raw_url": "https://github.com/encode/httpx/raw/4d05db33ceaa977e93dc07c12cbf8ea091df12a3/httpx%2F_decoders.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/httpx%2F_decoders.py?ref=4d05db33ceaa977e93dc07c12cbf8ea091df12a3",
+    "patch": "@@ -8,6 +8,7 @@\n \n import codecs\n import io\n+import sys\n import typing\n import zlib\n \n@@ -28,9 +29,12 @@\n \n # Zstandard support is optional\n try:\n-    import zstandard\n+    if sys.version_info >= (3, 14):\n+        from compression import zstd  # pragma: no cover\n+    else:\n+        from backports import zstd  # pragma: no cover\n except ImportError:  # pragma: no cover\n-    zstandard = None  # type: ignore\n+    zstd = None  # type: ignore\n \n \n class ContentDecoder:\n@@ -162,42 +166,41 @@ class ZStandardDecoder(ContentDecoder):\n     \"\"\"\n     Handle 'zstd' RFC 8878 decoding.\n \n-    Requires `pip install zstandard`.\n+    Requires `pip install backports.zstd` for Python before 3.14.\n     Can be installed as a dependency of httpx using `pip install httpx[zstd]`.\n     \"\"\"\n \n     # inspired by the ZstdDecoder implementation in urllib3\n     def __init__(self) -> None:\n-        if zstandard is None:  # pragma: no cover\n+        if zstd is None:  # pragma: no cover\n             raise ImportError(\n                 \"Using 'ZStandardDecoder', ...\"\n                 \"Make sure to install httpx using `pip install httpx[zstd]`.\"\n             ) from None\n \n-        self.decompressor = zstandard.ZstdDecompressor().decompressobj()\n+        self.decompressor = zstd.ZstdDecompressor()\n         self.seen_data = False\n \n     def decode(self, data: bytes) -> bytes:\n-        assert zstandard is not None\n+        assert zstd is not None\n         self.seen_data = True\n         output = io.BytesIO()\n         try:\n             output.write(self.decompressor.decompress(data))\n             while self.decompressor.eof and self.decompressor.unused_data:\n                 unused_data = self.decompressor.unused_data\n-                self.decompressor = zstandard.ZstdDecompressor().decompressobj()\n+                self.decompressor = zstd.ZstdDecompressor()\n                 output.write(self.decompressor.decompress(unused_data))\n-        except zstandard.ZstdError as exc:\n+        except zstd.ZstdError as exc:\n             raise DecodingError(str(exc)) from exc\n         return output.getvalue()\n \n     def flush(self) -> bytes:\n         if not self.seen_data:\n             return b\"\"\n-        ret = self.decompressor.flush()  # note: this is a no-op\n         if not self.decompressor.eof:\n             raise DecodingError(\"Zstandard data is incomplete\")  # pragma: no cover\n-        return bytes(ret)\n+        return b\"\"\n \n \n class MultiDecoder(ContentDecoder):\n@@ -389,5 +392,5 @@ def flush(self) -> list[str]:\n \n if brotli is None:\n     SUPPORTED_DECODERS.pop(\"br\")  # pragma: no cover\n-if zstandard is None:\n+if zstd is None:\n     SUPPORTED_DECODERS.pop(\"zstd\")  # pragma: no cover"
+  },
+  {
+    "sha": "48bd19629e81e93851b7fdcf828bde817b87c8b3",
+    "filename": "pyproject.toml",
+    "status": "modified",
+    "additions": 1,
+    "deletions": 1,
+    "changes": 2,
+    "blob_url": "https://github.com/encode/httpx/blob/4d05db33ceaa977e93dc07c12cbf8ea091df12a3/pyproject.toml",
+    "raw_url": "https://github.com/encode/httpx/raw/4d05db33ceaa977e93dc07c12cbf8ea091df12a3/pyproject.toml",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/pyproject.toml?ref=4d05db33ceaa977e93dc07c12cbf8ea091df12a3",
+    "patch": "@@ -52,7 +52,7 @@ socks = [\n     \"socksio==1.*\",\n ]\n zstd = [\n-  \"zstandard>=0.18.0\",\n+  \"backports.zstd>=1.0.0 ; python_version < '3.14'\",\n ]\n \n [project.scripts]"
+  },
+  {
+    "sha": "e1192ac004bbedb36acc371ebc92989b3d44e6d1",
+    "filename": "tests/test_decoders.py",
+    "status": "modified",
+    "additions": 6,
+    "deletions": 1,
+    "changes": 7,
+    "blob_url": "https://github.com/encode/httpx/blob/4d05db33ceaa977e93dc07c12cbf8ea091df12a3/tests%2Ftest_decoders.py",
+    "raw_url": "https://github.com/encode/httpx/raw/4d05db33ceaa977e93dc07c12cbf8ea091df12a3/tests%2Ftest_decoders.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/tests%2Ftest_decoders.py?ref=4d05db33ceaa977e93dc07c12cbf8ea091df12a3",
+    "patch": "@@ -1,15 +1,20 @@\n from __future__ import annotations\n \n import io\n+import sys\n import typing\n import zlib\n \n import chardet\n import pytest\n-import zstandard as zstd\n \n import httpx\n \n+if sys.version_info >= (3, 14):\n+    from compression import zstd  # pragma: no cover\n+else:\n+    from backports import zstd  # pragma: no cover\n+\n \n def test_deflate():\n     \"\"\""
+  }
+]

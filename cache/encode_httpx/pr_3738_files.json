@@ -1,0 +1,14 @@
+[
+  {
+    "sha": "fed6868d7b8ae9e16a0607511d51c9df2d674656",
+    "filename": "docs/third_party_packages.md",
+    "status": "modified",
+    "additions": 6,
+    "deletions": 0,
+    "changes": 6,
+    "blob_url": "https://github.com/encode/httpx/blob/231323c899cab2f5750c1d6d9bdcf27f988d56c3/docs%2Fthird_party_packages.md",
+    "raw_url": "https://github.com/encode/httpx/raw/231323c899cab2f5750c1d6d9bdcf27f988d56c3/docs%2Fthird_party_packages.md",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/docs%2Fthird_party_packages.md?ref=231323c899cab2f5750c1d6d9bdcf27f988d56c3",
+    "patch": "@@ -60,6 +60,12 @@ WebSocket support for HTTPX.\n \n Provides a [pytest](https://docs.pytest.org/en/latest/) fixture to mock HTTPX within test cases.\n \n+### python-proxy-headers\n+\n+[GitHub](https://github.com/proxymesh/python-proxy-headers)\n+\n+Provides `HTTPProxyTransport` and `AsyncHTTPProxyTransport` to be able to access proxy response headers.\n+\n ### RESPX\n \n [GitHub](https://github.com/lundberg/respx) - [Documentation](https://lundberg.github.io/respx/)"
+  }
+]

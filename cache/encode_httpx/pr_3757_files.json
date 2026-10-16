@@ -1,0 +1,26 @@
+[
+  {
+    "sha": "9fd5ec689df84a5795cf7e2eb70ee289abcb955a",
+    "filename": "httpx/_transports/mock.py",
+    "status": "modified",
+    "additions": 3,
+    "deletions": 0,
+    "changes": 3,
+    "blob_url": "https://github.com/encode/httpx/blob/324e16aab8289b3af001a2217ccfd54d0350e7fb/httpx%2F_transports%2Fmock.py",
+    "raw_url": "https://github.com/encode/httpx/raw/324e16aab8289b3af001a2217ccfd54d0350e7fb/httpx%2F_transports%2Fmock.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/httpx%2F_transports%2Fmock.py?ref=324e16aab8289b3af001a2217ccfd54d0350e7fb",
+    "patch": "@@ -1,5 +1,6 @@\n from __future__ import annotations\n \n+import datetime\n import typing\n \n from .._models import Request, Response\n@@ -24,6 +25,7 @@ def handle_request(\n         response = self.handler(request)\n         if not isinstance(response, Response):  # pragma: no cover\n             raise TypeError(\"Cannot use an async handler in a sync Client\")\n+        response.elapsed = datetime.timedelta()\n         return response\n \n     async def handle_async_request(\n@@ -40,4 +42,5 @@ async def handle_async_request(\n         if not isinstance(response, Response):\n             response = await response\n \n+        response.elapsed = datetime.timedelta()\n         return response"
+  },
+  {
+    "sha": "90afc7bfc6979a25aa66c912a9cded2182593c05",
+    "filename": "tests/client/test_client.py",
+    "status": "modified",
+    "additions": 39,
+    "deletions": 0,
+    "changes": 39,
+    "blob_url": "https://github.com/encode/httpx/blob/324e16aab8289b3af001a2217ccfd54d0350e7fb/tests%2Fclient%2Ftest_client.py",
+    "raw_url": "https://github.com/encode/httpx/raw/324e16aab8289b3af001a2217ccfd54d0350e7fb/tests%2Fclient%2Ftest_client.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/tests%2Fclient%2Ftest_client.py?ref=324e16aab8289b3af001a2217ccfd54d0350e7fb",
+    "patch": "@@ -460,3 +460,42 @@ def cp1252_but_no_content_type(request):\n         assert response.reason_phrase == \"OK\"\n         assert response.encoding == \"ISO-8859-1\"\n         assert response.text == text\n+\n+\n+def test_mock_transport_elapsed():\n+    \"\"\"Test that MockTransport sets the elapsed property.\n+\n+    Regression test for https://github.com/encode/httpx/issues/3712\n+    \"\"\"\n+\n+    def handler(request):\n+        return httpx.Response(200, json={\"text\": \"Hello, world!\"})\n+\n+    transport = httpx.MockTransport(handler)\n+    with httpx.Client(transport=transport) as client:\n+        response = client.get(\"http://www.example.com\")\n+        assert response.status_code == 200\n+        # MockTransport should set elapsed to timedelta(0)\n+        assert response.elapsed == timedelta(0)\n+        # Accessing elapsed should not raise RuntimeError\n+        assert isinstance(response.elapsed, timedelta)\n+\n+\n+@pytest.mark.anyio\n+async def test_async_mock_transport_elapsed():\n+    \"\"\"Test that MockTransport sets the elapsed property for async requests.\n+\n+    Regression test for https://github.com/encode/httpx/issues/3712\n+    \"\"\"\n+\n+    def handler(request):\n+        return httpx.Response(200, json={\"text\": \"Hello, world!\"})\n+\n+    transport = httpx.MockTransport(handler)\n+    async with httpx.AsyncClient(transport=transport) as client:\n+        response = await client.get(\"http://www.example.com\")\n+        assert response.status_code == 200\n+        # MockTransport should set elapsed to timedelta(0)\n+        assert response.elapsed == timedelta(0)\n+        # Accessing elapsed should not raise RuntimeError\n+        assert isinstance(response.elapsed, timedelta)"
+  }
+]

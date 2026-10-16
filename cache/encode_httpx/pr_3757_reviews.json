@@ -1,0 +1,42 @@
+[
+  {
+    "id": 5533213371,
+    "node_id": "PRR_kwDOCrLX_c8AAAABSc4iuw",
+    "user": {
+      "login": "jeonjw85",
+      "id": 26080016,
+      "node_id": "MDQ6VXNlcjI2MDgwMDE2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/26080016?u=bb4d73232323acecc5a2daef915f7044c8aa5851&v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jeonjw85",
+      "html_url": "https://github.com/jeonjw85",
+      "followers_url": "https://api.github.com/users/jeonjw85/followers",
+      "following_url": "https://api.github.com/users/jeonjw85/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jeonjw85/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jeonjw85/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jeonjw85/subscriptions",
+      "organizations_url": "https://api.github.com/users/jeonjw85/orgs",
+      "repos_url": "https://api.github.com/users/jeonjw85/repos",
+      "events_url": "https://api.github.com/users/jeonjw85/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jeonjw85/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "",
+    "state": "COMMENTED",
+    "html_url": "https://github.com/encode/httpx/pull/3757#pullrequestreview-5533213371",
+    "pull_request_url": "https://api.github.com/repos/encode/httpx/pulls/3757",
+    "author_association": "NONE",
+    "_links": {
+      "html": {
+        "href": "https://github.com/encode/httpx/pull/3757#pullrequestreview-5533213371"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/encode/httpx/pulls/3757"
+      }
+    },
+    "submitted_at": "2026-10-15T12:39:42Z",
+    "commit_id": "324e16aab8289b3af001a2217ccfd54d0350e7fb"
+  }
+]

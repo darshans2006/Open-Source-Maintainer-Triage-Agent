@@ -1,0 +1,82 @@
+[
+  {
+    "id": 5205808494,
+    "node_id": "PRR_kwDOCrLX_c8AAAABNkpVbg",
+    "user": {
+      "login": "nebinson",
+      "id": 159409589,
+      "node_id": "U_kgDOCYBltQ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/159409589?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/nebinson",
+      "html_url": "https://github.com/nebinson",
+      "followers_url": "https://api.github.com/users/nebinson/followers",
+      "following_url": "https://api.github.com/users/nebinson/following{/other_user}",
+      "gists_url": "https://api.github.com/users/nebinson/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/nebinson/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/nebinson/subscriptions",
+      "organizations_url": "https://api.github.com/users/nebinson/orgs",
+      "repos_url": "https://api.github.com/users/nebinson/repos",
+      "events_url": "https://api.github.com/users/nebinson/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/nebinson/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "",
+    "state": "APPROVED",
+    "html_url": "https://github.com/encode/httpx/pull/3785#pullrequestreview-5205808494",
+    "pull_request_url": "https://api.github.com/repos/encode/httpx/pulls/3785",
+    "author_association": "NONE",
+    "_links": {
+      "html": {
+        "href": "https://github.com/encode/httpx/pull/3785#pullrequestreview-5205808494"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/encode/httpx/pulls/3785"
+      }
+    },
+    "submitted_at": "2026-09-15T05:18:27Z",
+    "commit_id": "54857a13dfd2d868fc52a54b0eaa4a97487f97d2"
+  },
+  {
+    "id": 5324334990,
+    "node_id": "PRR_kwDOCrLX_c8AAAABPVrnjg",
+    "user": {
+      "login": "oxpxpxaxii7-lgtm",
+      "id": 326637755,
+      "node_id": "U_kgDOE3gYuw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/326637755?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/oxpxpxaxii7-lgtm",
+      "html_url": "https://github.com/oxpxpxaxii7-lgtm",
+      "followers_url": "https://api.github.com/users/oxpxpxaxii7-lgtm/followers",
+      "following_url": "https://api.github.com/users/oxpxpxaxii7-lgtm/following{/other_user}",
+      "gists_url": "https://api.github.com/users/oxpxpxaxii7-lgtm/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/oxpxpxaxii7-lgtm/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/oxpxpxaxii7-lgtm/subscriptions",
+      "organizations_url": "https://api.github.com/users/oxpxpxaxii7-lgtm/orgs",
+      "repos_url": "https://api.github.com/users/oxpxpxaxii7-lgtm/repos",
+      "events_url": "https://api.github.com/users/oxpxpxaxii7-lgtm/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/oxpxpxaxii7-lgtm/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "review ",
+    "state": "COMMENTED",
+    "html_url": "https://github.com/encode/httpx/pull/3785#pullrequestreview-5324334990",
+    "pull_request_url": "https://api.github.com/repos/encode/httpx/pulls/3785",
+    "author_association": "NONE",
+    "_links": {
+      "html": {
+        "href": "https://github.com/encode/httpx/pull/3785#pullrequestreview-5324334990"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/encode/httpx/pulls/3785"
+      }
+    },
+    "submitted_at": "2026-09-26T03:12:57Z",
+    "commit_id": "54857a13dfd2d868fc52a54b0eaa4a97487f97d2"
+  }
+]

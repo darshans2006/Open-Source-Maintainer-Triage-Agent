@@ -1,0 +1,14 @@
+[
+  {
+    "sha": "41707d8117382445a45bb7f5fbf7499bb8dfb222",
+    "filename": "httpx/_utils.py",
+    "status": "modified",
+    "additions": 3,
+    "deletions": 1,
+    "changes": 4,
+    "blob_url": "https://github.com/encode/httpx/blob/55ead904eff7376ccbc7f23e93be19117c642441/httpx%2F_utils.py",
+    "raw_url": "https://github.com/encode/httpx/raw/55ead904eff7376ccbc7f23e93be19117c642441/httpx%2F_utils.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/httpx%2F_utils.py?ref=55ead904eff7376ccbc7f23e93be19117c642441",
+    "patch": "@@ -89,7 +89,9 @@ def to_bytes_or_str(value: str, match_type_of: typing.AnyStr) -> typing.AnyStr:\n \n \n def unquote(value: str) -> str:\n-    return value[1:-1] if value[0] == value[-1] == '\"' else value\n+    if len(value) >= 2 and value[0] == value[-1] == '\"':\n+        return value[1:-1]\n+    return value\n \n \n def peek_filelike_length(stream: typing.Any) -> int | None:"
+  }
+]

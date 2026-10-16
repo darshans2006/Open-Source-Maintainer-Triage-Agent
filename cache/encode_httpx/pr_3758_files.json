@@ -1,0 +1,26 @@
+[
+  {
+    "sha": "0c80ab9d9030a1faa7439dfd0e028df6cf7dc5e0",
+    "filename": "httpx/_content.py",
+    "status": "modified",
+    "additions": 13,
+    "deletions": 0,
+    "changes": 13,
+    "blob_url": "https://github.com/encode/httpx/blob/843346fc98e062a7b0be0835cd055d9d11d2b175/httpx%2F_content.py",
+    "raw_url": "https://github.com/encode/httpx/raw/843346fc98e062a7b0be0835cd055d9d11d2b175/httpx%2F_content.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/httpx%2F_content.py?ref=843346fc98e062a7b0be0835cd055d9d11d2b175",
+    "patch": "@@ -202,6 +202,19 @@ def encode_request(\n         # However for compat with requests, we *do* still support\n         # `data=<bytes...>` usages. We deal with that case here, treating it\n         # as if `content=<...>` had been supplied instead.\n+\n+        # Validate that data is bytes-like or an iterable of bytes, not other types\n+        if isinstance(data, (list, tuple)):\n+            # Check if it's a list/tuple of bytes\n+            for item in data:\n+                if not isinstance(item, (bytes, bytearray, memoryview)):\n+                    item_type = type(item).__name__\n+                    raise TypeError(\n+                        f\"Expected bytes-like object in 'data' sequence, \"\n+                        f\"got {item_type}. Use 'json=' for JSON data or \"\n+                        f\"'data={{...}}' for form data.\"\n+                    )\n+\n         message = \"Use 'content=<...>' to upload raw bytes/text content.\"\n         warnings.warn(message, DeprecationWarning, stacklevel=2)\n         return encode_content(data)"
+  },
+  {
+    "sha": "7ff619f3357477a138658c6d2f952c18cdefd9e7",
+    "filename": "tests/test_content.py",
+    "status": "modified",
+    "additions": 21,
+    "deletions": 0,
+    "changes": 21,
+    "blob_url": "https://github.com/encode/httpx/blob/843346fc98e062a7b0be0835cd055d9d11d2b175/tests%2Ftest_content.py",
+    "raw_url": "https://github.com/encode/httpx/raw/843346fc98e062a7b0be0835cd055d9d11d2b175/tests%2Ftest_content.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/tests%2Ftest_content.py?ref=843346fc98e062a7b0be0835cd055d9d11d2b175",
+    "patch": "@@ -364,6 +364,27 @@ def test_invalid_argument():\n         httpx.Request(method, url, content={\"a\": \"b\"})  # type: ignore\n \n \n+def test_invalid_data_list_of_dicts():\n+    \"\"\"Test that passing a list of dicts to data= produces a clear error message.\n+\n+    This was previously raising a confusing 'Attempted to send a sync request\n+    with an AsyncClient instance' error with AsyncClient. Now it should give\n+    a clear error for both sync and async clients.\n+    \"\"\"\n+    with pytest.raises(TypeError, match=\"Expected bytes-like object.*got dict\"):\n+        httpx.Request(method, url, data=[{\"a\": \"b\"}])  # type: ignore\n+\n+\n+@pytest.mark.anyio\n+async def test_invalid_data_list_of_dicts_async():\n+    \"\"\"Test that AsyncClient produces clear error for invalid data parameter.\n+\n+    Regression test for issue #3471.\n+    \"\"\"\n+    with pytest.raises(TypeError, match=\"Expected bytes-like object.*got dict\"):\n+        httpx.Request(method, url, data=[{\"a\": \"b\"}])  # type: ignore\n+\n+\n @pytest.mark.anyio\n async def test_multipart_multiple_files_single_input_content():\n     files = ["
+  }
+]

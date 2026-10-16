@@ -1,0 +1,14 @@
+[
+  {
+    "sha": "d7367638a4a6cb0e7175be341ff6e23218c2988a",
+    "filename": "httpx/__init__.py",
+    "status": "modified",
+    "additions": 7,
+    "deletions": 0,
+    "changes": 7,
+    "blob_url": "https://github.com/encode/httpx/blob/bbf3aea38dc77fbce4550701812287d276ff25f1/httpx%2F__init__.py",
+    "raw_url": "https://github.com/encode/httpx/raw/bbf3aea38dc77fbce4550701812287d276ff25f1/httpx%2F__init__.py",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/httpx%2F__init__.py?ref=bbf3aea38dc77fbce4550701812287d276ff25f1",
+    "patch": "@@ -1,3 +1,10 @@\n+\"\"\"\n+HTTPX is a fully featured HTTP client for Python.\n+\n+This module exposes the public HTTPX API, including the Client and AsyncClient\n+classes, request functions, transports, exceptions, and related utilities.\n+\"\"\"\n+\n from .__version__ import __description__, __title__, __version__\n from ._api import *\n from ._auth import *"
+  }
+]

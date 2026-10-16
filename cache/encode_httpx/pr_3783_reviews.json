@@ -1,0 +1,202 @@
+[
+  {
+    "id": 5186132073,
+    "node_id": "PRR_kwDOCrLX_c8AAAABNR4YaQ",
+    "user": {
+      "login": "imbdb",
+      "id": 3460775,
+      "node_id": "MDQ6VXNlcjM0NjA3NzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3460775?u=9bd6605abb71e0307abafbd0ff47d2efb8ee60a7&v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/imbdb",
+      "html_url": "https://github.com/imbdb",
+      "followers_url": "https://api.github.com/users/imbdb/followers",
+      "following_url": "https://api.github.com/users/imbdb/following{/other_user}",
+      "gists_url": "https://api.github.com/users/imbdb/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/imbdb/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/imbdb/subscriptions",
+      "organizations_url": "https://api.github.com/users/imbdb/orgs",
+      "repos_url": "https://api.github.com/users/imbdb/repos",
+      "events_url": "https://api.github.com/users/imbdb/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/imbdb/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "Thank you for this PR. Looks good to me.\nHelps in getting around these non standard conventions.",
+    "state": "APPROVED",
+    "html_url": "https://github.com/encode/httpx/pull/3783#pullrequestreview-5186132073",
+    "pull_request_url": "https://api.github.com/repos/encode/httpx/pulls/3783",
+    "author_association": "NONE",
+    "_links": {
+      "html": {
+        "href": "https://github.com/encode/httpx/pull/3783#pullrequestreview-5186132073"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/encode/httpx/pulls/3783"
+      }
+    },
+    "submitted_at": "2026-09-12T10:20:06Z",
+    "commit_id": "f0e232fc94a56c069fd39bc039d169f984c8524e"
+  },
+  {
+    "id": 5186194382,
+    "node_id": "PRR_kwDOCrLX_c8AAAABNR8Lzg",
+    "user": {
+      "login": "imbdb",
+      "id": 3460775,
+      "node_id": "MDQ6VXNlcjM0NjA3NzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3460775?u=9bd6605abb71e0307abafbd0ff47d2efb8ee60a7&v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/imbdb",
+      "html_url": "https://github.com/imbdb",
+      "followers_url": "https://api.github.com/users/imbdb/followers",
+      "following_url": "https://api.github.com/users/imbdb/following{/other_user}",
+      "gists_url": "https://api.github.com/users/imbdb/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/imbdb/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/imbdb/subscriptions",
+      "organizations_url": "https://api.github.com/users/imbdb/orgs",
+      "repos_url": "https://api.github.com/users/imbdb/repos",
+      "events_url": "https://api.github.com/users/imbdb/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/imbdb/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "",
+    "state": "COMMENTED",
+    "html_url": "https://github.com/encode/httpx/pull/3783#pullrequestreview-5186194382",
+    "pull_request_url": "https://api.github.com/repos/encode/httpx/pulls/3783",
+    "author_association": "NONE",
+    "_links": {
+      "html": {
+        "href": "https://github.com/encode/httpx/pull/3783#pullrequestreview-5186194382"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/encode/httpx/pulls/3783"
+      }
+    },
+    "submitted_at": "2026-09-12T10:51:10Z",
+    "commit_id": "f0e232fc94a56c069fd39bc039d169f984c8524e"
+  },
+  {
+    "id": 5186195471,
+    "node_id": "PRR_kwDOCrLX_c8AAAABNR8QDw",
+    "user": {
+      "login": "imbdb",
+      "id": 3460775,
+      "node_id": "MDQ6VXNlcjM0NjA3NzU=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3460775?u=9bd6605abb71e0307abafbd0ff47d2efb8ee60a7&v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/imbdb",
+      "html_url": "https://github.com/imbdb",
+      "followers_url": "https://api.github.com/users/imbdb/followers",
+      "following_url": "https://api.github.com/users/imbdb/following{/other_user}",
+      "gists_url": "https://api.github.com/users/imbdb/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/imbdb/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/imbdb/subscriptions",
+      "organizations_url": "https://api.github.com/users/imbdb/orgs",
+      "repos_url": "https://api.github.com/users/imbdb/repos",
+      "events_url": "https://api.github.com/users/imbdb/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/imbdb/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "",
+    "state": "CHANGES_REQUESTED",
+    "html_url": "https://github.com/encode/httpx/pull/3783#pullrequestreview-5186195471",
+    "pull_request_url": "https://api.github.com/repos/encode/httpx/pulls/3783",
+    "author_association": "NONE",
+    "_links": {
+      "html": {
+        "href": "https://github.com/encode/httpx/pull/3783#pullrequestreview-5186195471"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/encode/httpx/pulls/3783"
+      }
+    },
+    "submitted_at": "2026-09-12T10:51:25Z",
+    "commit_id": "f0e232fc94a56c069fd39bc039d169f984c8524e"
+  },
+  {
+    "id": 5220040423,
+    "node_id": "PRR_kwDOCrLX_c8AAAABNyN-5w",
+    "user": {
+      "login": "kajinamit",
+      "id": 6630918,
+      "node_id": "MDQ6VXNlcjY2MzA5MTg=",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6630918?u=8a24e62bdab1e21a664241071a55ab09f5ea418a&v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/kajinamit",
+      "html_url": "https://github.com/kajinamit",
+      "followers_url": "https://api.github.com/users/kajinamit/followers",
+      "following_url": "https://api.github.com/users/kajinamit/following{/other_user}",
+      "gists_url": "https://api.github.com/users/kajinamit/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/kajinamit/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/kajinamit/subscriptions",
+      "organizations_url": "https://api.github.com/users/kajinamit/orgs",
+      "repos_url": "https://api.github.com/users/kajinamit/repos",
+      "events_url": "https://api.github.com/users/kajinamit/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/kajinamit/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "",
+    "state": "COMMENTED",
+    "html_url": "https://github.com/encode/httpx/pull/3783#pullrequestreview-5220040423",
+    "pull_request_url": "https://api.github.com/repos/encode/httpx/pulls/3783",
+    "author_association": "NONE",
+    "_links": {
+      "html": {
+        "href": "https://github.com/encode/httpx/pull/3783#pullrequestreview-5220040423"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/encode/httpx/pulls/3783"
+      }
+    },
+    "submitted_at": "2026-09-16T08:00:08Z",
+    "commit_id": "c1e73124c5d24aa6d61f0413d217f5810f62eb00"
+  },
+  {
+    "id": 5251602212,
+    "node_id": "PRR_kwDOCrLX_c8AAAABOQUXJA",
+    "user": {
+      "login": "motaharevadiaty-design",
+      "id": 306680057,
+      "node_id": "U_kgDOEkeQ-Q",
+      "avatar_url": "https://avatars.githubusercontent.com/u/306680057?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/motaharevadiaty-design",
+      "html_url": "https://github.com/motaharevadiaty-design",
+      "followers_url": "https://api.github.com/users/motaharevadiaty-design/followers",
+      "following_url": "https://api.github.com/users/motaharevadiaty-design/following{/other_user}",
+      "gists_url": "https://api.github.com/users/motaharevadiaty-design/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/motaharevadiaty-design/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/motaharevadiaty-design/subscriptions",
+      "organizations_url": "https://api.github.com/users/motaharevadiaty-design/orgs",
+      "repos_url": "https://api.github.com/users/motaharevadiaty-design/repos",
+      "events_url": "https://api.github.com/users/motaharevadiaty-design/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/motaharevadiaty-design/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "",
+    "state": "COMMENTED",
+    "html_url": "https://github.com/encode/httpx/pull/3783#pullrequestreview-5251602212",
+    "pull_request_url": "https://api.github.com/repos/encode/httpx/pulls/3783",
+    "author_association": "NONE",
+    "_links": {
+      "html": {
+        "href": "https://github.com/encode/httpx/pull/3783#pullrequestreview-5251602212"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/encode/httpx/pulls/3783"
+      }
+    },
+    "submitted_at": "2026-09-18T19:09:13Z",
+    "commit_id": "c1e73124c5d24aa6d61f0413d217f5810f62eb00"
+  }
+]

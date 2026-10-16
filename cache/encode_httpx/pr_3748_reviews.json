@@ -1,0 +1,42 @@
+[
+  {
+    "id": 5121725302,
+    "node_id": "PRR_kwDOCrLX_c8AAAABMUdTdg",
+    "user": {
+      "login": "Mahnoor-Zaffar",
+      "id": 216480752,
+      "node_id": "U_kgDODOc78A",
+      "avatar_url": "https://avatars.githubusercontent.com/u/216480752?u=35acfba2f7769a01e0729e027df2b1af244c200b&v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/Mahnoor-Zaffar",
+      "html_url": "https://github.com/Mahnoor-Zaffar",
+      "followers_url": "https://api.github.com/users/Mahnoor-Zaffar/followers",
+      "following_url": "https://api.github.com/users/Mahnoor-Zaffar/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Mahnoor-Zaffar/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/Mahnoor-Zaffar/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Mahnoor-Zaffar/subscriptions",
+      "organizations_url": "https://api.github.com/users/Mahnoor-Zaffar/orgs",
+      "repos_url": "https://api.github.com/users/Mahnoor-Zaffar/repos",
+      "events_url": "https://api.github.com/users/Mahnoor-Zaffar/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/Mahnoor-Zaffar/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "Reviewed: `httpx/_transports/default.py`, `tests/test_exceptions.py`. CI: all checks passing.\n\n- The enhancement to the error message in `map_httpcore_exceptions` is clear and provides valuable guidance for users encountering SSL errors. The hints about possible causes are a great addition.\n- The test `test_ssl_error_message_enhancement` effectively covers the new behavior by checking both error messages and ensuring the hints are included. This should help catch regressions related to SSL error handling.\n\nOverall, the changes are well-implemented and should improve user experience significantly. Nice work!",
+    "state": "COMMENTED",
+    "html_url": "https://github.com/encode/httpx/pull/3748#pullrequestreview-5121725302",
+    "pull_request_url": "https://api.github.com/repos/encode/httpx/pulls/3748",
+    "author_association": "NONE",
+    "_links": {
+      "html": {
+        "href": "https://github.com/encode/httpx/pull/3748#pullrequestreview-5121725302"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/encode/httpx/pulls/3748"
+      }
+    },
+    "submitted_at": "2026-09-05T14:59:25Z",
+    "commit_id": "978b5f1c5e2d997e8b6ca98b446f1b9be14cbd20"
+  }
+]

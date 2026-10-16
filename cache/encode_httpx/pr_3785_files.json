@@ -1,0 +1,14 @@
+[
+  {
+    "sha": "84bb10416582916abf2a06d5b9cf9698247a60d0",
+    "filename": "requirements.txt",
+    "status": "modified",
+    "additions": 1,
+    "deletions": 1,
+    "changes": 2,
+    "blob_url": "https://github.com/encode/httpx/blob/54857a13dfd2d868fc52a54b0eaa4a97487f97d2/requirements.txt",
+    "raw_url": "https://github.com/encode/httpx/raw/54857a13dfd2d868fc52a54b0eaa4a97487f97d2/requirements.txt",
+    "contents_url": "https://api.github.com/repos/encode/httpx/contents/requirements.txt?ref=54857a13dfd2d868fc52a54b0eaa4a97487f97d2",
+    "patch": "@@ -19,7 +19,7 @@ twine==6.1.0\n \n # Tests & Linting\n coverage[toml]==7.10.6\n-cryptography==45.0.7\n+cryptography==46.0.6\n mypy==1.17.1\n pytest==8.4.1\n ruff==0.12.11"
+  }
+]

@@ -1,0 +1,122 @@
+[
+  {
+    "id": 5082769422,
+    "node_id": "PRR_kwDOCrLX_c8AAAABLvToDg",
+    "user": {
+      "login": "noqt",
+      "id": 185926987,
+      "node_id": "U_kgDOCxUFSw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/185926987?u=fbd9124563a7a34109bfa0ebda419bbeea0926bd&v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/noqt",
+      "html_url": "https://github.com/noqt",
+      "followers_url": "https://api.github.com/users/noqt/followers",
+      "following_url": "https://api.github.com/users/noqt/following{/other_user}",
+      "gists_url": "https://api.github.com/users/noqt/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/noqt/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/noqt/subscriptions",
+      "organizations_url": "https://api.github.com/users/noqt/orgs",
+      "repos_url": "https://api.github.com/users/noqt/repos",
+      "events_url": "https://api.github.com/users/noqt/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/noqt/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "",
+    "state": "COMMENTED",
+    "html_url": "https://github.com/encode/httpx/pull/3769#pullrequestreview-5082769422",
+    "pull_request_url": "https://api.github.com/repos/encode/httpx/pulls/3769",
+    "author_association": "NONE",
+    "_links": {
+      "html": {
+        "href": "https://github.com/encode/httpx/pull/3769#pullrequestreview-5082769422"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/encode/httpx/pulls/3769"
+      }
+    },
+    "submitted_at": "2026-09-01T20:29:23Z",
+    "commit_id": "ff7190eda0ab308f1d884b228e17b32e6fdac756"
+  },
+  {
+    "id": 5315458662,
+    "node_id": "PRR_kwDOCrLX_c8AAAABPNN2Zg",
+    "user": {
+      "login": "otrumb",
+      "id": 138744580,
+      "node_id": "U_kgDOCEUTBA",
+      "avatar_url": "https://avatars.githubusercontent.com/u/138744580?u=4b5550e1c5d6b6b0c453fd790b3f057e81bbd22b&v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/otrumb",
+      "html_url": "https://github.com/otrumb",
+      "followers_url": "https://api.github.com/users/otrumb/followers",
+      "following_url": "https://api.github.com/users/otrumb/following{/other_user}",
+      "gists_url": "https://api.github.com/users/otrumb/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/otrumb/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/otrumb/subscriptions",
+      "organizations_url": "https://api.github.com/users/otrumb/orgs",
+      "repos_url": "https://api.github.com/users/otrumb/repos",
+      "events_url": "https://api.github.com/users/otrumb/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/otrumb/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "The new \\\\\try/finally\\\\ fixes only part of the leak. It ensures mounted cleanup starts when the primary transport raises, but cleanup still stops when any mounted transport raises.\\n\\nOn native Windows at exact head \\\\\ff7190eda0ab308f1d884b228e17b32e6fdac756\\\\, I tested a failing primary transport, a failing first mount, and a later recording mount through the public \\\\Client\\\\/\\\\AsyncClient\\\\ APIs. \\\\close()\\\\ produced:\\n\\n    [\\\\close:primary\\\\, \\\\close:first\\\\]\\n\\nThe later mount remained open. \\\\\u0007close()\\\\, \\\\__exit__()\\\\, and \\\\__aexit__()\\\\ behaved identically; async behavior was reproduced with both asyncio and Trio. The first mount's exception also replaced the original primary-transport exception.\\n\\nBase \\\\\u0007e1b9f66238f75ced3ced5e4485408435de10768\\\\ stopped immediately after the primary failure. Head does improve that case when every mount closes successfully, but it does not satisfy the broader all-transports cleanup contract when multiple close operations fail.\\n\\nPlease attempt each transport cleanup independently, preserve or aggregate raised exceptions, and add sync/async regression tests covering primary failure, mounted failure, later mounted cleanup, and exception propagation.",
+    "state": "CHANGES_REQUESTED",
+    "html_url": "https://github.com/encode/httpx/pull/3769#pullrequestreview-5315458662",
+    "pull_request_url": "https://api.github.com/repos/encode/httpx/pulls/3769",
+    "author_association": "NONE",
+    "_links": {
+      "html": {
+        "href": "https://github.com/encode/httpx/pull/3769#pullrequestreview-5315458662"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/encode/httpx/pulls/3769"
+      }
+    },
+    "submitted_at": "2026-09-25T08:30:14Z",
+    "commit_id": "ff7190eda0ab308f1d884b228e17b32e6fdac756"
+  },
+  {
+    "id": 5342821288,
+    "node_id": "PRR_kwDOCrLX_c8AAAABPnT7qA",
+    "user": {
+      "login": "jamalkamaladdin",
+      "id": 256541632,
+      "node_id": "U_kgDOD0qDwA",
+      "avatar_url": "https://avatars.githubusercontent.com/u/256541632?u=587c1e3ab4c478e7a6206f28fa2cf53a465f656b&v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jamalkamaladdin",
+      "html_url": "https://github.com/jamalkamaladdin",
+      "followers_url": "https://api.github.com/users/jamalkamaladdin/followers",
+      "following_url": "https://api.github.com/users/jamalkamaladdin/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jamalkamaladdin/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jamalkamaladdin/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jamalkamaladdin/subscriptions",
+      "organizations_url": "https://api.github.com/users/jamalkamaladdin/orgs",
+      "repos_url": "https://api.github.com/users/jamalkamaladdin/repos",
+      "events_url": "https://api.github.com/users/jamalkamaladdin/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jamalkamaladdin/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "",
+    "state": "COMMENTED",
+    "html_url": "https://github.com/encode/httpx/pull/3769#pullrequestreview-5342821288",
+    "pull_request_url": "https://api.github.com/repos/encode/httpx/pulls/3769",
+    "author_association": "NONE",
+    "_links": {
+      "html": {
+        "href": "https://github.com/encode/httpx/pull/3769#pullrequestreview-5342821288"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/encode/httpx/pulls/3769"
+      }
+    },
+    "submitted_at": "2026-09-28T18:12:17Z",
+    "commit_id": "ff7190eda0ab308f1d884b228e17b32e6fdac756"
+  }
+]

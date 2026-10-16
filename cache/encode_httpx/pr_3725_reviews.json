@@ -1,0 +1,42 @@
+[
+  {
+    "id": 3577004135,
+    "node_id": "PRR_kwDOCrLX_c7VNMBn",
+    "user": {
+      "login": "mbeijen",
+      "id": 659504,
+      "node_id": "MDQ6VXNlcjY1OTUwNA==",
+      "avatar_url": "https://avatars.githubusercontent.com/u/659504?u=5b2501e83fbc7c3e350b449690fbddd50515488f&v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/mbeijen",
+      "html_url": "https://github.com/mbeijen",
+      "followers_url": "https://api.github.com/users/mbeijen/followers",
+      "following_url": "https://api.github.com/users/mbeijen/following{/other_user}",
+      "gists_url": "https://api.github.com/users/mbeijen/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/mbeijen/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/mbeijen/subscriptions",
+      "organizations_url": "https://api.github.com/users/mbeijen/orgs",
+      "repos_url": "https://api.github.com/users/mbeijen/repos",
+      "events_url": "https://api.github.com/users/mbeijen/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/mbeijen/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "",
+    "state": "APPROVED",
+    "html_url": "https://github.com/encode/httpx/pull/3725#pullrequestreview-3577004135",
+    "pull_request_url": "https://api.github.com/repos/encode/httpx/pulls/3725",
+    "author_association": "CONTRIBUTOR",
+    "_links": {
+      "html": {
+        "href": "https://github.com/encode/httpx/pull/3725#pullrequestreview-3577004135"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/encode/httpx/pulls/3725"
+      }
+    },
+    "submitted_at": "2025-12-15T08:29:22Z",
+    "commit_id": "4d05db33ceaa977e93dc07c12cbf8ea091df12a3"
+  }
+]
