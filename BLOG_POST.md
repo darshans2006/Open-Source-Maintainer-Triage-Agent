@@ -168,4 +168,4 @@ Building agents on connected data taught us three essential lessons:
 3. **FalkorDB is Uniquely Suited for Agent Context**: With in-memory GraphBLAS execution, Cypher expressiveness, and sub-15ms response times, FalkorDB provides the deterministic reasoning backbone modern AI agents desperately need.
 
 Check out the full repository and run it locally in under 3 minutes:  
-🔗 [GitHub: Open-Source Maintainer Triage Agent](https://github.com/your-username/open-source-maintainer-triage-agent)
+🔗 [GitHub: Open-Source Maintainer Triage Agent](https://github.com/darshans2006/open-source-maintainer-triage-agent)

@@ -95,6 +95,8 @@ flowchart TD
 
 ## Benchmark Repository Data (`encode/httpx`)
 
+The benchmark dataset represents a sampled triage snapshot of `encode/httpx` (configured via `--limit-prs 30 --limit-issues 50 --depth 150`) to stay within standard GitHub API rate limits (60 req/hr) while capturing the active triage queue:
+
 | Metric | FalkorDB Value | Details |
 | :--- | :---: | :--- |
 | **Tracked Python Files** | **60** | Core source modules (excluding tests and docs) |
@@ -214,7 +216,7 @@ Creates a `(:TriageDecision)` audit node, updates edge verification flags, and f
 
 ### 1. Setup Environment
 ```bash
-git clone https://github.com/your-username/open-source-maintainer-triage-agent.git
+git clone https://github.com/darshans2006/open-source-maintainer-triage-agent.git
 cd open-source-maintainer-triage-agent
 
 python -m venv .venv
