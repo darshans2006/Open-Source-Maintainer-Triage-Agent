@@ -685,6 +685,8 @@ class GitLogMiner:
                 cwd=self.repo_root,
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
+                errors="replace",
                 check=True,
             )
         except Exception as e:
