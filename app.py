@@ -226,7 +226,7 @@ def get_all_issues_table():
 # ---------------------------------------------------------------------------
 # Header & KPI Bar
 # ---------------------------------------------------------------------------
-st.markdown('<div class="main-header">⚡ Open-Source Maintainer Triage Agent</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-header">Open-Source Maintainer Triage Agent</div>', unsafe_allow_html=True)
 st.markdown(
     '<div class="sub-header">Graph-native pull request and issue triage powered by FalkorDB</div>',
     unsafe_allow_html=True,
@@ -267,9 +267,9 @@ st.markdown("<div style='height: 18px;'></div>", unsafe_allow_html=True)
 # ---------------------------------------------------------------------------
 tab_prs, tab_issues, tab_inspector = st.tabs(
     [
-        "📋 Prioritized PR Triage Queue",
-        "🔍 Issue Triage & Structural PR Linker",
-        "🛠️ FastMCP Tools & Graph Explorer",
+        "PR Triage Queue",
+        "Issue Resolver",
+        "FastMCP Tools & Explorer",
     ]
 )
 
@@ -301,7 +301,7 @@ with tab_prs:
 
     with col_detail:
         if selected_pr:
-            st.markdown(f"### 🛡️ Triage Decision Panel: PR #{selected_pr}")
+            st.markdown(f"### Triage Decision: PR #{selected_pr}")
 
             # Run deterministic graph tools
             col_data = graph_tools.detect_pr_collisions(selected_pr)
@@ -319,20 +319,19 @@ with tab_prs:
             st.markdown(f'<div class="graph-path-box">{risk_data["graph_path"]}</div>', unsafe_allow_html=True)
 
             # Card 2: Collision Radar
-            st.markdown("#### 💥 PR Collision Radar")
+            st.markdown("#### PR Collision Radar")
             if col_data["total_collisions"] > 0:
                 st.caption(
                     f"Detected **{col_data['high_severity_direct']} Direct File Overlaps** and **{col_data['medium_severity_coupled']} Import-Coupled Collisions**:"
                 )
                 for c in col_data["collisions"][:3]:
-                    icon = "🚨" if c["severity"] == "HIGH" else "⚠️"
-                    st.markdown(f"{icon} **{c['collision_type']}** ({c['severity']} Risk) — Churn: `{c['combined_churn']}`")
+                    st.markdown(f"**{c['collision_type']}** ({c['severity']} Risk) — Churn: `{c['combined_churn']}`")
                     st.markdown(f'<div class="graph-path-box">{c["graph_path"]}</div>', unsafe_allow_html=True)
             else:
-                st.success("✓ No direct or coupled collisions detected on core Python modules.")
+                st.success("No direct or coupled collisions detected on core Python modules.")
 
             # Card 3: Recommended Reviewers
-            st.markdown("#### 👥 Recency-Weighted Reviewer Recommendations")
+            st.markdown("#### Recommended Reviewers")
             if rev_data["recommended_reviewers"]:
                 for r in rev_data["recommended_reviewers"]:
                     st.markdown(
@@ -343,9 +342,9 @@ with tab_prs:
             else:
                 st.info("No prior non-bot committers found for modified files.")
 
-            # Human-in-the-Loop Action Box
+            # Action Box
             st.markdown("---")
-            st.markdown("#### ✍️ Human-in-the-Loop: Commit Triage Decision")
+            st.markdown("#### Commit Triage Decision")
             with st.form(f"triage_form_{selected_pr}"):
                 top_reviewer = rev_data["recommended_reviewers"][0]["login"] if rev_data["recommended_reviewers"] else ""
                 assigned_reviewer = st.text_input("Assigned Reviewer Handle:", value=top_reviewer)
@@ -353,7 +352,7 @@ with tab_prs:
                     "Triage Action Summary:",
                     value=f"Approved risk assessment ({risk_data['risk_level']}). Assign reviewer @{assigned_reviewer} based on graph traversal.",
                 )
-                submit_button = st.form_submit_button("✅ Approve & Record Triage Decision")
+                submit_button = st.form_submit_button("Approve & Record Triage Decision")
 
                 if submit_button:
                     decision = graph_tools.approve_and_record_triage(
@@ -370,16 +369,16 @@ with tab_prs:
 
 
 # ---------------------------------------------------------------------------
-# TAB 2: 50-Issue Triage Queue & Structural PR Linker
+# TAB 2: Issue Triage & Structural PR Linker
 # ---------------------------------------------------------------------------
 with tab_issues:
-    st.subheader("50 Ingested Open Issues — Structural PR Resolver")
+    st.subheader("Open Issues — Structural PR Resolver")
     df_issues = get_all_issues_table()
 
     c_issues_tbl, c_issues_res = st.columns([1.1, 1.4])
 
     with c_issues_tbl:
-        st.markdown("**Select an Issue to resolve candidate Pull Requests via deterministic graph traversal:**")
+        st.markdown("**Select an issue to resolve candidate Pull Requests via graph traversal:**")
         issue_nums = df_issues["Issue #"].tolist()
         def_issue_idx = issue_nums.index(3728) if 3728 in issue_nums else 0
         selected_issue = st.selectbox("Choose Issue Number:", issue_nums, index=def_issue_idx)
@@ -397,7 +396,7 @@ with tab_issues:
 
     with c_issues_res:
         if selected_issue:
-            st.markdown(f"### 🔗 Structural Resolution: Issue #{selected_issue}")
+            st.markdown(f"### Structural Resolution: Issue #{selected_issue}")
 
             # Run link_issues_to_prs with write-back
             links_result = graph_tools.link_issues_to_prs(selected_issue)
@@ -415,7 +414,7 @@ with tab_issues:
                     st.markdown(f'<div class="graph-path-box">{match["graph_path"]}</div>', unsafe_allow_html=True)
 
                 st.markdown("---")
-                st.markdown("#### 🎯 Human-in-the-Loop: Approve Issue-to-PR Link")
+                st.markdown("#### Confirm Issue-to-PR Link")
                 with st.form(f"approve_link_form_{selected_issue}"):
                     best_pr = links_result["candidate_matches"][0]["pr_number"]
                     chosen_pr = st.number_input("Candidate PR Number to Link:", value=int(best_pr), step=1)
@@ -423,7 +422,7 @@ with tab_issues:
                         "Resolution Note:",
                         value=f"Verified that PR #{chosen_pr} addresses Issue #{selected_issue} through modified client modules.",
                     )
-                    approve_link = st.form_submit_button("🔗 Confirm & Commit Issue-to-PR Link")
+                    approve_link = st.form_submit_button("Confirm & Commit Issue-to-PR Link")
 
                     if approve_link:
                         dec = graph_tools.approve_and_record_triage(
@@ -451,7 +450,7 @@ with tab_inspector:
     col_tool_test, col_db_state = st.columns([1.1, 1.4])
 
     with col_tool_test:
-        st.markdown("#### 🛠️ Test MCP Tool Calling")
+        st.markdown("#### Test Tool Execution")
         tool_choice = st.selectbox(
             "Select MCP Tool:",
             [
@@ -466,7 +465,7 @@ with tab_inspector:
         input_pr = st.number_input("PR Number:", value=3741, step=1)
         input_issue = st.number_input("Issue Number:", value=3728, step=1)
 
-        if st.button("🚀 Execute Tool via Cypher"):
+        if st.button("Execute Tool"):
             start_t = time.perf_counter()
             tool_output = {}
 
@@ -490,7 +489,7 @@ with tab_inspector:
             st.json(tool_output)
 
     with col_db_state:
-        st.markdown("#### 💾 Live FalkorDB Session Write-Backs")
+        st.markdown("#### Database Session Write-Backs")
         g = graph_tools.get_graph()
 
         st.markdown("**Recent `(:TriageDecision)` Nodes Committed to FalkorDB:**")
