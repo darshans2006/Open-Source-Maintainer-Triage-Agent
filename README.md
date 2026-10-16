@@ -234,10 +234,25 @@ docker run -p 6379:6379 -d --name falkordb falkordb/falkordb:latest
 ```
 
 ### 3. Ingest Repository Graph
-The project includes cached GitHub REST API payloads in `cache/encode_httpx/`, allowing immediate ingestion without API rate limits or authentication tokens:
+The project includes pre-cached GitHub REST API payloads in `cache/encode_httpx/`, allowing immediate offline ingestion for the default target without API rate limits or authentication tokens:
 ```bash
 python ingest.py --repo encode/httpx
 ```
+
+#### Ingesting Any Other Python Repository
+The ingestion engine works dynamically with any public Python repository on GitHub. Simply pass the `--repo <owner>/<repo>` flag:
+```bash
+# Example 1: Ingest Starlette
+python ingest.py --repo encode/starlette
+
+# Example 2: Ingest Requests
+python ingest.py --repo psf/requests
+
+# Example 3: Ingest FastAPI
+python ingest.py --repo tiangolo/fastapi
+```
+
+> **Tip for Custom Repositories**: When ingesting repositories that are not pre-cached, add your `GITHUB_TOKEN` to `.env` to take advantage of GitHub's authenticated rate limit of 5,000 requests/hour (unauthenticated calls are capped at 60/hour). You can also customize sampling bounds with `--limit-prs` (default: 30), `--limit-issues` (default: 50), and commit history `--depth` (default: 150).
 
 ### 4. Run Unit Tests
 ```bash
