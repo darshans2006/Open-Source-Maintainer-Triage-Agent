@@ -89,7 +89,7 @@ flowchart TD
 
 4. **Recency-Decayed Reviewer Scoring**:
    Instead of static keyword matching, reviewer recommendations traverse recent commits touching the modified files with continuous time decay:
-   $$\text{Score} = \sum \frac{\text{changes}}{1.0 + 0.05 \times \text{days\_ago}} + 15.0 \times \text{prior\_reviews}$$
+   $$\text{Score} = \sum \frac{\text{changes}}{1.0 + 0.05 \times \text{days}_{\text{ago}}} + 15.0 \times \text{prior}_{\text{reviews}}$$
    Bots (`[bot]`, `dependabot`) and the PR author are filtered out automatically.
 
 ---

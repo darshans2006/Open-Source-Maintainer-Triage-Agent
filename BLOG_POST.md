@@ -89,7 +89,7 @@ When PR #3741 modified `httpx/_utils.py`, our agent automatically classified it 
 
 ### 4. Recency-Decayed Reviewer Scoring
 To recommend reviewers for PR #3741, FalkorDB traversed commits touching `httpx/_client.py` and `httpx/_utils.py`, filtering out bots and the PR author, applying continuous time-decay:
-$$\text{Score} = \sum \frac{\text{changes}}{1.0 + 0.05 \times \text{days\_ago}} + 15.0 \times \text{prior\_reviews}$$
+$$\text{Score} = \sum \frac{\text{changes}}{1.0 + 0.05 \times \text{days}_{\text{ago}}} + 15.0 \times \text{prior}_{\text{reviews}}$$
 
 Top recommendations:
 1. `@lovelydinosaur` (Score: 41.73, with +30.0 peer review bonus)
