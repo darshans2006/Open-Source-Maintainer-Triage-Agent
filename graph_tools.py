@@ -312,7 +312,9 @@ def link_issues_to_prs(issue_number: Optional[int] = None) -> Dict[str, Any]:
                       rel.hop_distance = item.hop_distance,
                       rel.verified_by_human = false,
                       rel.created_at = item.timestamp
-        ON MATCH SET rel.confidence = CASE WHEN item.confidence > rel.confidence THEN item.confidence ELSE rel.confidence END,
+        ON MATCH SET rel.confidence = CASE WHEN coalesce(rel.verified_by_human, false) THEN 1.0 ELSE item.confidence END,
+                     rel.hop_distance = item.hop_distance,
+                     rel.shared_file = item.shared_file,
                      rel.updated_at = item.timestamp
         """
         g.query(writeback_query, {"batch": writeback_batch})

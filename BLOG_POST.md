@@ -85,7 +85,7 @@ FalkorDB executed GraphBLAS PageRank in memory:
 - `httpx/_types.py`: PageRank **0.0598** (In-degree 12)
 - `httpx/_utils.py`: PageRank **0.0383** (In-degree 7)
 
-When PR #3741 modified `httpx/_utils.py`, our agent automatically classified it as **`HIGH_RISK_CORE`**, triggering a policy requirement: **2 senior maintainer approvals required before merging**.
+When PR #3741 modified `httpx/_utils.py`, our agent automatically classified it as **`HIGH_RISK_CORE`**, triggering a policy recommendation: **2 senior maintainer approvals recommended before merging** (with executable `gh` CLI commands generated for reviewer assignments, while hard merge blocking remains governed by GitHub Branch Protection Rules or Repository Rulesets).
 
 ### 4. Recency-Decayed Reviewer Scoring
 To recommend reviewers for PR #3741, FalkorDB traversed commits touching `httpx/_client.py` and `httpx/_utils.py`, filtering out bots and the PR author, applying continuous time-decay:
@@ -117,7 +117,12 @@ MERGE (i)-[rel:POTENTIALLY_ADDRESSED_BY]->(pr)
 ON CREATE SET rel.confidence = calc_confidence,
               rel.hop_distance = hop_distance,
               rel.shared_file = f1.path,
-              rel.verified_by_human = false
+              rel.verified_by_human = false,
+              rel.created_at = timestamp()
+ON MATCH SET rel.confidence = CASE WHEN coalesce(rel.verified_by_human, false) THEN 1.0 ELSE calc_confidence END,
+             rel.hop_distance = hop_distance,
+             rel.shared_file = f1.path,
+             rel.updated_at = timestamp()
 RETURN pr.number, pr.title, pr.author, calc_confidence, hop_distance, f1.path, f2.path
 ```
 
@@ -168,4 +173,4 @@ Building agents on connected data taught us three essential lessons:
 3. **FalkorDB is Uniquely Suited for Agent Context**: With in-memory GraphBLAS execution, Cypher expressiveness, and sub-15ms response times, FalkorDB provides the deterministic reasoning backbone modern AI agents desperately need.
 
 Check out the full repository and run it locally in under 3 minutes:  
-🔗 [GitHub: Open-Source Maintainer Triage Agent](https://github.com/darshans2006/open-source-maintainer-triage-agent)
+🔗 [GitHub: Open-Source Maintainer Triage Agent](https://github.com/darshans2006/Open-Source-Maintainer-Triage-Agent)

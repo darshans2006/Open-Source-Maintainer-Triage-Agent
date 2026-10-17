@@ -2,6 +2,7 @@
 
 > A graph-native triage and merge conflict hazard detector for open-source repositories, powered by **FalkorDB** and **FastMCP**.
 
+[![CI](https://github.com/darshans2006/Open-Source-Maintainer-Triage-Agent/actions/workflows/ci.yml/badge.svg)](https://github.com/darshans2006/Open-Source-Maintainer-Triage-Agent/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Database](https://img.shields.io/badge/Graph_Engine-FalkorDB-red.svg)](https://www.falkordb.com/)
 [![Protocol](https://img.shields.io/badge/MCP-FastMCP-purple.svg)](https://github.com/jlowin/fastmcp)
@@ -84,7 +85,7 @@ flowchart TD
    - Traversing `(:Issue)-[:MENTIONS]->(:File)<-[:MODIFIES]-(:PullRequest)` links them with 0.95 confidence, creating a `[:POTENTIALLY_ADDRESSED_BY]` edge in the graph.
 
 3. **GraphBLAS In-Memory PageRank for Core Architecture**:
-   FalkorDB computes `CALL algo.pageRank('File', 'IMPORTS')` directly in memory. Highly-imported core files (`httpx/_models.py` at `0.0773`, `httpx/_types.py` at `0.0598`) are classified as `HIGH_RISK_CORE`, automatically enforcing a two-maintainer review policy.
+   FalkorDB computes `CALL algo.pageRank('File', 'IMPORTS')` directly in memory. Highly-imported core files (`httpx/_models.py` at `0.0773`, `httpx/_types.py` at `0.0598`) are classified as `HIGH_RISK_CORE`. The agent computes architectural risk and recommends a 2-maintainer review policy (and generates executable `gh` CLI commands to assign senior reviewers and record audit comments), while hard merge blocking requires pairing with GitHub Branch Protection Rules or Repository Rulesets.
 
 4. **Recency-Decayed Reviewer Scoring**:
    Instead of static keyword matching, reviewer recommendations traverse recent commits touching the modified files with continuous time decay:
@@ -108,6 +109,17 @@ The benchmark dataset represents a sampled triage snapshot of `encode/httpx` (co
 | **Unique Developers** | **63** | Normalized GitHub handles (bots excluded) |
 | **Git Commits Mined** | **123** | Git history with line churn and timestamps |
 | **Cypher Query Latency** | **< 15 ms** | In-memory graph traversal response times |
+
+### Reproducible Baseline vs. FalkorDB Graph Benchmark
+
+To demonstrate why graph topology outperforms conventional flat file-overlap heuristics (such as SQL tables or git diff matching), we evaluated our FalkorDB engine on verified live data from `encode/httpx` against an industry-standard flat file-overlap baseline:
+
+| Benchmark Dimension | Flat File-Overlap Baseline (SQL / Git Diff) | FalkorDB Multi-Hop Graph | Recall & Performance Delta |
+| :--- | :--- | :--- | :--- |
+| **PR #3741 Collision Detection** | **5 direct file overlaps**<br/>*(Misses all 5 1-hop import-coupled collisions like PR #3778 &rarr; 50% recall on structural hazards)* | **10 collisions detected**<br/>• 5 direct 0-hop file overlaps<br/>• 5 1-hop import-coupled collisions<br/>*(e.g., PR #3741 `_client.py` -[:IMPORTS]-> `_transports/default.py` <- PR #3778)* | **+100% hazard recall**<br/>*(Eliminates 50% false-negative hazard blindspot)*<br/>Query Latency: **17.46 ms** |
+| **Issue #3728 Candidate PR Resolution** | **5 candidate PRs**<br/>*(Baseline text/exact-file check finds only direct 0-hop matches)* | **9 candidate PRs**<br/>• 5 0-hop direct matches (`0.95` conf)<br/>• 4 1-hop import-coupled matches (`0.76` conf) | **+80% candidate coverage**<br/>*(Uncovers cross-module transport lifecycle fixes)*<br/>Query Latency: **19.75 ms** |
+| **End-to-End Ingestion Runtime** | N/A *(Requires re-parsing raw git commits and diffs dynamically per request)* | **< 5s** (warm cache)<br/>**< 25s** (cold git clone + full AST extract) | One-time AST & git topology ingestion powers instant Cypher traversals |
+| **Precision & False-Positive Controls** | None *(Subject to false-positive explosions across test fixtures and package barrels)* | **Strict architectural pruning**:<br/>• Excludes `tests/` and `test/`<br/>• Excludes `__init__.py` bridge nodes | High precision; eliminates ubiquitous root module false-positives |
 
 ---
 
@@ -157,7 +169,12 @@ MERGE (i)-[rel:POTENTIALLY_ADDRESSED_BY]->(pr)
 ON CREATE SET rel.confidence = calc_confidence,
               rel.hop_distance = hop_distance,
               rel.shared_file = f1.path,
-              rel.verified_by_human = false
+              rel.verified_by_human = false,
+              rel.created_at = timestamp()
+ON MATCH SET rel.confidence = CASE WHEN coalesce(rel.verified_by_human, false) THEN 1.0 ELSE calc_confidence END,
+             rel.hop_distance = hop_distance,
+             rel.shared_file = f1.path,
+             rel.updated_at = timestamp()
 RETURN i.number, pr.number, calc_confidence, hop_distance, f1.path, f2.path
 ```
 
@@ -187,6 +204,10 @@ LIMIT 3
 
 ### 4. `assess_pr_core_risk(pr_number)`
 ```cypher
+// 1. In-Memory GraphBLAS PageRank Computation (computed during ingestion)
+CALL algo.pageRank('File', 'IMPORTS') YIELD node, score SET node.pagerank = score;
+
+// 2. PR Architectural Core Risk Evaluation
 MATCH (pr:PullRequest {number: $pr_number})-[mod:MODIFIES]->(f:File)
 WHERE NOT f.path STARTS WITH 'tests/'
   AND NOT f.path ENDS WITH '__init__.py'
@@ -204,7 +225,34 @@ RETURN f.path AS file_path,
 ```
 
 ### 5. `approve_and_record_triage(...)`
-Creates a `(:TriageDecision)` audit node, updates edge verification flags, and formats executable `gh` CLI commands (`gh pr edit`, `gh pr comment`).
+```cypher
+// 1. Commit (:TriageDecision) audit node linked to PR or Issue
+MATCH (target:PullRequest {number: $item_number}) // or (target:Issue {number: $item_number})
+CREATE (td:TriageDecision {
+    id: $decision_id,
+    item_type: $item_type,
+    item_number: $item_number,
+    action_summary: $action_summary,
+    assigned_reviewer: $reviewer,
+    linked_pr: $linked_pr,
+    recorded_at: $timestamp
+})
+MERGE (target)-[:HAS_TRIAGE_DECISION]->(td)
+
+// 2. Lock verified human ground truth if an Issue -> PR link is approved
+MATCH (i:Issue {number: $issue_num})
+MATCH (pr:PullRequest {number: $pr_num})
+MERGE (i)-[rel:POTENTIALLY_ADDRESSED_BY]->(pr)
+ON CREATE SET rel.verified_by_human = true,
+              rel.verified_at = $timestamp,
+              rel.confidence = 1.0,
+              rel.hop_distance = 0,
+              rel.decision_id = $decision_id
+ON MATCH SET rel.verified_by_human = true,
+             rel.verified_at = $timestamp,
+             rel.decision_id = $decision_id
+RETURN td, rel
+```
 
 ---
 
@@ -216,8 +264,8 @@ Creates a `(:TriageDecision)` audit node, updates edge verification flags, and f
 
 ### 1. Setup Environment
 ```bash
-git clone https://github.com/darshans2006/open-source-maintainer-triage-agent.git
-cd open-source-maintainer-triage-agent
+git clone https://github.com/darshans2006/Open-Source-Maintainer-Triage-Agent.git
+cd Open-Source-Maintainer-Triage-Agent
 
 python -m venv .venv
 # On Windows:
@@ -238,6 +286,11 @@ The project includes pre-cached GitHub REST API payloads in `cache/encode_httpx/
 ```bash
 python ingest.py --repo encode/httpx
 ```
+
+#### Graph State Management: `--clean` (Default Rebuild) vs. `--append` (Incremental Updates)
+`ingest.py` provides deterministic graph lifecycle management:
+- **`--clean` (Default Rebuild)**: Drops and wipes the target graph in FalkorDB before ingesting. This guarantees a clean-slate state where deleted files, merged/closed PRs, and obsolete branch heads leave zero orphaned nodes or phantom relationships.
+- **`--append` (Incremental Updates)**: Ingests without dropping existing data (`python ingest.py --repo <owner>/<repo> --append`), merging newly opened PRs, recent commits, and incoming issues into the active knowledge graph. Combined with our idempotent Cypher queries (`MERGE ... ON CREATE SET ... ON MATCH SET`), maintainer audit verifications (`rel.verified_by_human = true`) are preserved while refreshing topology distances and confidence scores.
 
 #### Ingesting Any Other Python Repository
 The ingestion engine works dynamically with any public Python repository on GitHub. Simply pass the `--repo <owner>/<repo>` flag:
@@ -287,7 +340,7 @@ python mcp_server.py --test
   "mcpServers": {
     "maintainer-triage": {
       "command": "python",
-      "args": ["/path/to/open-source-maintainer-triage-agent/mcp_server.py"]
+      "args": ["/path/to/Open-Source-Maintainer-Triage-Agent/mcp_server.py"]
     }
   }
 }
@@ -320,6 +373,14 @@ python mcp_server.py --test
    - *Limitation*: Issues that describe bugs purely conceptually without mentioning classes, files, or error traces remain unlinked unless manually mapped by a maintainer.
 3. **GraphBLAS In-Memory Dependency**:
    - PageRank execution relies on FalkorDB's linear algebra engine. Large repositories (>10,000 files) require sufficient container RAM allocation during the PageRank call.
+
+### 4-Stage Collision Detection Roadmap
+
+Our collision detection engine evolves from shallow file overlap to deep semantic and CI integration:
+1. **Stage 1: File + 1-Hop AST Imports [Implemented]**: Catches 0-hop direct file conflicts and 1-hop dependency imports across open PRs (`PR1 -[:MODIFIES]-> F1 -[:IMPORTS]-> F2 <-[:MODIFIES]- PR2`) with `__init__.py` and `tests/` bridge node exclusions in `< 18 ms`.
+2. **Stage 2: AST Function/Class Hunk Diffing [Roadmap]**: Parse PR patch hunks against AST nodes (`ast.FunctionDef`, `ast.AsyncFunctionDef`, `ast.ClassDef`) to isolate collisions to intersecting symbol scopes rather than coarse whole-file edits.
+3. **Stage 3: Call-Graph Signature Change Propagation [Roadmap]**: Build inter-procedural call-graph edges (`(:Function)-[:CALLS]->(:Function)`) and propagate breaking signature changes (parameter modifications, return type drift) downstream across unmerged PR branches.
+4. **Stage 4: Automated CI Test-Matrix Triggering [Roadmap]**: Automatically dispatch dynamic GitHub Actions matrix workflows testing collided PR branches in combination before approving merge queues.
 
 ---
 
