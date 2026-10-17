@@ -289,7 +289,17 @@ def link_issues_to_prs(issue_number: Optional[int] = None) -> Dict[str, Any]:
     coupled_matches = sorted(coupled_dedup.values(), key=lambda x: -x["confidence"])[:5]
     final_links = direct_matches + coupled_matches
 
-    # FalkorDB Write-Back: Create [:POTENTIALLY_ADDRESSED_BY] edge
+    # FalkorDB Stale Edge Cleanup: Delete unverified candidate links to PRs no longer open
+    cleanup_stale_query = """
+    MATCH (i:Issue)-[rel:POTENTIALLY_ADDRESSED_BY]->(pr:PullRequest)
+    WHERE ($issue_number IS NULL OR i.number = $issue_number)
+      AND coalesce(rel.verified_by_human, false) = false
+      AND pr.state <> 'open'
+    DELETE rel
+    """
+    g.query(cleanup_stale_query, {"issue_number": issue_number})
+
+    # FalkorDB Write-Back: Upsert [:POTENTIALLY_ADDRESSED_BY] edge for active candidates
     if final_links:
         writeback_batch = [
             {
@@ -490,6 +500,22 @@ def assess_pr_core_risk(pr_number: int) -> Dict[str, Any]:
     }
 
 
+def _sanitize_cli_arg(text: str) -> str:
+    """
+    Sanitizes string inputs when formatting GitHub CLI (`gh`) shell commands.
+    Escapes backslashes, double quotes, backticks, and dollar signs to prevent
+    quote breakage and shell injection when commands are copy-pasted into terminal emulators.
+    """
+    if not text:
+        return ""
+    return (
+        text.replace("\\", "\\\\")
+        .replace('"', '\\"')
+        .replace("`", "\\`")
+        .replace("$", "\\$")
+    )
+
+
 # ---------------------------------------------------------------------------
 # Tool 5: Approve & Record Triage Decision (Write-Back)
 # ---------------------------------------------------------------------------
@@ -575,14 +601,17 @@ def approve_and_record_triage(
             },
         )
 
-    # 3. Generate exact executable GitHub CLI (`gh`) commands
+    # 3. Generate exact executable GitHub CLI (`gh`) commands (with sanitized inputs)
+    safe_reviewer = _sanitize_cli_arg(clean_reviewer) if clean_reviewer else None
+    safe_action = _sanitize_cli_arg(action_summary)
+
     cli_commands: List[str] = []
     if clean_type in ["pr", "pull_request", "pullrequest"]:
-        if clean_reviewer:
-            cli_commands.append(f'gh pr edit {item_number} --add-reviewer "{clean_reviewer}"')
-        cli_commands.append(f'gh pr comment {item_number} --body "[Maintainer Triage Agent]: {action_summary}"')
+        if safe_reviewer:
+            cli_commands.append(f'gh pr edit {item_number} --add-reviewer "{safe_reviewer}"')
+        cli_commands.append(f'gh pr comment {item_number} --body "[Maintainer Triage Agent]: {safe_action}"')
     else:  # Issue
-        comment_body = f"[Maintainer Triage Agent]: {action_summary}"
+        comment_body = f"[Maintainer Triage Agent]: {safe_action}"
         if linked_pr:
             comment_body += f"\n\nAssociated candidate Pull Request: #{linked_pr}"
             cli_commands.append(f'gh issue edit {item_number} --add-label "has-pr"')

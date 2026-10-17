@@ -103,6 +103,13 @@ Top recommendations:
 Here is the exact Cypher query used by our `link_issues_to_prs` FastMCP tool:
 
 ```cypher
+// 1. Purge stale unverified candidate links to closed PRs
+MATCH (i:Issue {number: $issue_number})-[rel:POTENTIALLY_ADDRESSED_BY]->(pr:PullRequest)
+WHERE coalesce(rel.verified_by_human, false) = false
+  AND pr.state <> 'open'
+DELETE rel;
+
+// 2. Traverse and link active candidate PRs
 MATCH (i:Issue {number: $issue_number})-[m:MENTIONS]->(f1:File)
 MATCH (f1)-[imp:IMPORTS*0..1]->(f2:File)<-[mod:MODIFIES]-(pr:PullRequest {state: 'open'})
 WHERE NOT f2.path STARTS WITH 'tests/'

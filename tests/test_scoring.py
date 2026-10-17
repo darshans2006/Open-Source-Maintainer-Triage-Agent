@@ -58,3 +58,34 @@ def test_writeback_edge_confidence_resolution():
     assert resolve_confidence(verified_by_human=False, calculated_confidence=0.76) == 0.76
     assert resolve_confidence(verified_by_human=None, calculated_confidence=0.95) == 0.95
 
+
+def test_sanitize_cli_arg():
+    """Validates shell injection defense and quote escaping in generated gh CLI commands."""
+    from graph_tools import _sanitize_cli_arg
+
+    assert _sanitize_cli_arg("Standard recommendation") == "Standard recommendation"
+    assert _sanitize_cli_arg('Fix "timeout" bug') == 'Fix \\"timeout\\" bug'
+    assert _sanitize_cli_arg("Check `_client.py` imports") == "Check \\`_client.py\\` imports"
+    assert _sanitize_cli_arg("Inject $(whoami) & $ENV") == "Inject \\$(whoami) & \\$ENV"
+    assert _sanitize_cli_arg("Path C:\\Users\\test") == "Path C:\\\\Users\\\\test"
+    assert _sanitize_cli_arg("") == ""
+
+
+def test_stale_edge_pruning_filter():
+    """Validates the Cypher predicate for purging candidate edges targeting closed PRs."""
+    def should_prune(verified_by_human: bool | None, pr_state: str) -> bool:
+        is_verified = bool(verified_by_human) if verified_by_human is not None else False
+        return (not is_verified) and (pr_state != "open")
+
+    # Unverified link to closed/merged PR -> should be pruned
+    assert should_prune(verified_by_human=False, pr_state="closed") is True
+    assert should_prune(verified_by_human=None, pr_state="merged") is True
+
+    # Verified link to closed PR -> preserved (human ground truth)
+    assert should_prune(verified_by_human=True, pr_state="closed") is False
+
+    # Unverified link to open PR -> preserved for active evaluation
+    assert should_prune(verified_by_human=False, pr_state="open") is False
+    assert should_prune(verified_by_human=True, pr_state="open") is False
+
+

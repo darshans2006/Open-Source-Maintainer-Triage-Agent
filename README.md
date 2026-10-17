@@ -153,6 +153,14 @@ RETURN pr1, pr2, f_direct, m1.changes, m2.changes, f1, f2, m1c.changes, m2c.chan
 
 ### 2. `link_issues_to_prs(issue_number)`
 ```cypher
+// 1. Purge stale unverified candidate links to PRs no longer open
+MATCH (i:Issue)-[rel:POTENTIALLY_ADDRESSED_BY]->(pr:PullRequest)
+WHERE ($issue_number IS NULL OR i.number = $issue_number)
+  AND coalesce(rel.verified_by_human, false) = false
+  AND pr.state <> 'open'
+DELETE rel;
+
+// 2. Multi-hop traversal and candidate link upsert
 MATCH (i:Issue)
 WHERE ($issue_number IS NULL OR i.number = $issue_number)
 MATCH (i)-[m:MENTIONS]->(f1:File)
@@ -253,6 +261,8 @@ ON MATCH SET rel.verified_by_human = true,
              rel.decision_id = $decision_id
 RETURN td, rel
 ```
+
+> **Security Note on CLI Emission**: All emitted GitHub CLI (`gh`) command parameters are sanitized (escaping double quotes, backticks, dollar signs, and backslashes) to protect maintainers against shell injection vulnerabilities when executing copy-pasted triage actions.
 
 ---
 
