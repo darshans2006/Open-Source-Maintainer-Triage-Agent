@@ -286,8 +286,12 @@ with tab_prs:
     with col_table:
         st.markdown("**Select a Pull Request to inspect explainable graph triage recommendations:**")
         pr_numbers = df_prs["PR #"].tolist()
-        default_index = pr_numbers.index(3741) if 3741 in pr_numbers else 0
-        selected_pr = st.selectbox("Choose PR Number:", pr_numbers, index=default_index)
+        if not pr_numbers:
+            st.info("No open pull requests found in the ingested repository.")
+            selected_pr = None
+        else:
+            default_index = pr_numbers.index(3741) if 3741 in pr_numbers else 0
+            selected_pr = st.selectbox("Choose PR Number:", pr_numbers, index=default_index)
 
         st.dataframe(
             df_prs,
@@ -381,8 +385,12 @@ with tab_issues:
     with c_issues_tbl:
         st.markdown("**Select an issue to resolve candidate Pull Requests via graph traversal:**")
         issue_nums = df_issues["Issue #"].tolist()
-        def_issue_idx = issue_nums.index(3728) if 3728 in issue_nums else 0
-        selected_issue = st.selectbox("Choose Issue Number:", issue_nums, index=def_issue_idx)
+        if not issue_nums:
+            st.info("No open issues found in the ingested repository.")
+            selected_issue = None
+        else:
+            def_issue_idx = issue_nums.index(3728) if 3728 in issue_nums else 0
+            selected_issue = st.selectbox("Choose Issue Number:", issue_nums, index=def_issue_idx)
 
         st.dataframe(
             df_issues,
