@@ -3,6 +3,9 @@
 *Published for Graph Hacks: Context for AI Agents (Track 1: Agents That Act on Connected Data)*  
 *Tags: `falkordb`, `ai`, `python`, `opensource`, `fastmcp`, `graphhacks`*
 
+> 📺 **Watch the Demo Video:** [https://youtu.be/XffEPgpil24](https://youtu.be/XffEPgpil24)  
+> [![Watch Open-Source Maintainer Triage Agent Demo](./thumbnail_cinematic.jpg)](https://youtu.be/XffEPgpil24)
+
 ---
 
 ## The Open-Source Maintainer Dilemma

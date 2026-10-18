@@ -7,7 +7,17 @@
 [![Database](https://img.shields.io/badge/Graph_Engine-FalkorDB-red.svg)](https://www.falkordb.com/)
 [![Protocol](https://img.shields.io/badge/MCP-FastMCP-purple.svg)](https://github.com/jlowin/fastmcp)
 [![UI](https://img.shields.io/badge/Dashboard-Streamlit-orange.svg)](https://streamlit.io/)
+[![Demo: YouTube](https://img.shields.io/badge/Demo-YouTube-red?logo=youtube)](https://youtu.be/XffEPgpil24)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+---
+
+## 🎬 Demo Video
+
+[![Watch Open-Source Maintainer Triage Agent Demo](./thumbnail_cinematic.jpg)](https://youtu.be/XffEPgpil24)
+
+> 📺 **Watch the live walkthrough on YouTube:** [https://youtu.be/XffEPgpil24](https://youtu.be/XffEPgpil24)  
+> *Demonstrating 1-hop merge conflict hazard detection on `encode/httpx`, in-memory GraphBLAS PageRank risk scoring, recency-decayed reviewer scoring, FastMCP tool execution, and the Streamlit maintainer interface.*
 
 ---
 
